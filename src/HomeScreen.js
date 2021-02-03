@@ -1,0 +1,39 @@
+import * as React from 'react';
+import { Button, View, Text } from 'react-native';
+import { withLogger } from './withLogger';
+
+const HomeScreen = ({ navigation, route }) => {
+  const [count, setCount] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={() => setCount((c) => c + 1)} title="Update count" />
+      ),
+    });
+  }, [navigation]);
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Text>Count: {count}</Text>
+      <Button
+        title="Go to Details"
+        onPress={() =>
+          navigation.navigate('Details', {
+            itemId: 86,
+            otherParam: 'anything you want here',
+            navigation,
+            route,
+          })
+        }
+      />
+      <Button
+        title="Update the title"
+        onPress={() => navigation.setOptions({ title: 'Updated!' })}
+      />
+    </View>
+  );
+};
+
+export default withLogger(HomeScreen);
