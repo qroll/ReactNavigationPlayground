@@ -10,6 +10,14 @@ export function SettingsScreen({ navigation }) {
         title="Go to Option"
         onPress={() => navigation.push('Option', { itemId: 1 })}
       />
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.push('Details', { itemId: 1337 })}
+      />
+      <Button
+        title="Go to Start Details Flow"
+        onPress={() => navigation.navigate('StartToDetails')}
+      />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button title="Pop" onPress={() => navigation.pop()} />
     </View>

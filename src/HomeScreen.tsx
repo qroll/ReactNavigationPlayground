@@ -20,13 +20,24 @@ const HomeScreen = ({ navigation, route }) => {
       <Button
         title="Go to Details"
         onPress={() =>
-          navigation.navigate('Details', {
+          navigation.push('Details', {
             itemId: 86,
             otherParam: 'anything you want here',
-            navigation,
-            route,
           })
         }
+      />
+      <Button
+        title="Go to Start Details Flow"
+        onPress={() =>
+          navigation.navigate('Tabs', {
+            screen: 'Phantom',
+            params: { screen: 'StartToDetails' },
+          })
+        }
+      />
+      <Button
+        title="Go to Options"
+        onPress={() => navigation.navigate('Option', { itemId: 123 })}
       />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button

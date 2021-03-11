@@ -20,7 +20,14 @@ function DetailsScreen({ navigation, route }) {
           })
         }
       />
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+      <Button
+        title="Go to Home"
+        onPress={() => navigation.navigate('Tabs', { screen: 'HomeTab' })}
+      />
+      <Button
+        title="Go to Options"
+        onPress={() => navigation.push('Option', { itemId: 32 })}
+      />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button title="Pop" onPress={() => navigation.pop()} />
       <Button title="Reset" onPress={() => console.log('????')} />

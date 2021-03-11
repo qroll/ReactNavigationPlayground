@@ -5,17 +5,17 @@ import { NavigationRef } from './NavigationRef';
 import { withLogger } from './withLogger';
 
 function ModalScreen({ navigation, route }) {
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('@@@ Modal pop!', route.params?.count);
-      route.params?.dismiss?.();
-      // NavigationRef.current?.dispatch(StackActions.popToTop());
-      // navigation?.popToTop();
-    }, 5000);
-    return () => clearTimeout(timer);
-    // NOTE: by right this should be empty? how to do that when props can change? are you supposed to use a separate useEffect?
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation, route.params]);
+  // React.useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     console.log('@@@ Modal pop!', route.params?.count);
+  //     route.params?.dismiss?.();
+  //     // NavigationRef.current?.dispatch(StackActions.popToTop());
+  //     // navigation?.popToTop();
+  //   }, 5000);
+  //   return () => clearTimeout(timer);
+  //   // NOTE: by right this should be empty? how to do that when props can change? are you supposed to use a separate useEffect?
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigation, route.params]);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
