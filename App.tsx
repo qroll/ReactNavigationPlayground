@@ -5,6 +5,7 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import {
+  CardStyleInterpolators,
   createStackNavigator,
   TransitionPresets,
   TransitionSpecs,
@@ -20,6 +21,10 @@ import { NavigationRef } from './src/NavigationRef';
 import { Button, StyleProp, ViewStyle } from 'react-native';
 import StartToDetailsScreen from './src/StartToDetailsScreen';
 import TabBar from './src/TabBar';
+import AStartScreen from './src/feature/A/StartScreen';
+import AScreen1 from './src/feature/A/Screen1';
+import AEndScreen from './src/feature/A/EndScreen';
+import { FeatureScreen } from './src/feature';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,7 +47,7 @@ function PhantomStackScreen() {
         //     opacity: progress,
         //   },
         // }),
-        ...TransitionPresets.SlideFromRightIOS,
+        // ...TransitionPresets.SlideFromRightIOS,
       }}>
       <Stack.Screen
         name="StartToDetails"
@@ -50,6 +55,36 @@ function PhantomStackScreen() {
         options={{
           title: 'Overview',
           cardStyle: defaultCardStyleOptions,
+        }}
+      />
+      <Stack.Screen
+        name="AStartScreen"
+        component={AStartScreen}
+        options={{
+          title: 'AStartScreen',
+          cardStyle: defaultCardStyleOptions,
+        }}
+      />
+       <Stack.Screen
+        name="AEndScreen"
+        component={AEndScreen}
+        options={{
+          title: 'AEndScreen',
+          cardStyle: defaultCardStyleOptions,
+          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          // transitionSpec: {
+          //   open: {
+          //     animation: 'timing',
+          //     config: {
+          //       duration: 500,
+          //       easing: (value) => value,
+          //     },
+          //   },
+          //   close: TransitionSpecs.FadeInFromBottomAndroidSpec,
+          // },
+          // animationTypeForReplace: "pop"
+          // animationEnabled: false,
+          // ...TransitionPresets.SlideFromRightIOS
         }}
       />
     </Stack.Navigator>
@@ -102,6 +137,7 @@ function TabScreen() {
       backBehavior="history"
       tabBar={(props) => <TabBar {...props} />}>
       <Tab.Screen name="HomeTab" component={HomeScreen} />
+      <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
       <Tab.Screen name="Phantom" component={PhantomStackScreen} />
     </Tab.Navigator>
@@ -116,7 +152,7 @@ function App() {
       onStateChange={(state) => console.log(JSON.stringify(state, null, 2))}>
       <Root.Navigator
         mode="modal"
-        screenOptions={{ cardStyle: { backgroundColor: 'red' } }}>
+        screenOptions={{ cardStyle: { backgroundColor: 'red' }, ...TransitionPresets.SlideFromRightIOS, }}>
         <Root.Screen name="Tabs" component={TabScreen} />
         {/* startPage */}
         <Root.Screen name="Modal" component={ModalScreen} />
@@ -137,6 +173,7 @@ function App() {
             ...TransitionPresets.SlideFromRightIOS,
           }}
         />
+        <Root.Screen name="AScreen1" component={AScreen1} options={{...TransitionPresets.SlideFromRightIOS}}/>
         <Root.Screen name="Option" component={OptionScreen} />
       </Root.Navigator>
     </NavigationContainer>
