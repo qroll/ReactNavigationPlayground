@@ -53,7 +53,7 @@ function DetailsScreen({ navigation, route }) {
       <Button
         title="Go to Settings"
         onPress={() => {
-          navigation.navigate('Settings', {
+          navigation.navigate('SettingsTab', {
             screen: 'Option',
             params: { itemId: 3, otherParam: 'From settings' },
             initial: false,

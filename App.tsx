@@ -47,7 +47,7 @@ function PhantomStackScreen() {
         //     opacity: progress,
         //   },
         // }),
-        // ...TransitionPresets.SlideFromRightIOS,
+        ...TransitionPresets.SlideFromRightIOS,
       }}>
       <Stack.Screen
         name="StartToDetails"
@@ -135,7 +135,8 @@ function TabScreen() {
   return (
     <Tab.Navigator
       backBehavior="history"
-      tabBar={(props) => <TabBar {...props} />}>
+      tabBar={(props) => <TabBar {...props} />}
+      >
       <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
@@ -149,11 +150,12 @@ function App() {
     <NavigationContainer
       ref={NavigationRef}
       theme={DefaultTheme}
-      onStateChange={(state) => console.log(JSON.stringify(state, null, 2))}>
+      onStateChange={(state) => console.log(JSON.stringify(state, null, 2))}
+      >
       <Root.Navigator
         mode="modal"
         screenOptions={{ cardStyle: { backgroundColor: 'red' }, ...TransitionPresets.SlideFromRightIOS, }}>
-        <Root.Screen name="Tabs" component={TabScreen} />
+        <Root.Screen name="Tabs" component={TabScreen} options={{headerShown: false}} />
         {/* startPage */}
         <Root.Screen name="Modal" component={ModalScreen} />
         <Root.Screen name="Maintenance" component={MaintenanceScreen} />

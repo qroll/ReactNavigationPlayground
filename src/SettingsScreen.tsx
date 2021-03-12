@@ -16,7 +16,10 @@ export function SettingsScreen({ navigation }) {
       />
       <Button
         title="Go to Start Details Flow"
-        onPress={() => navigation.navigate('StartToDetails')}
+        onPress={() => navigation.push('Tabs', {
+          screen: 'Phantom',
+          params: { screen: 'StartToDetails' },
+        })}
       />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button title="Pop" onPress={() => navigation.pop()} />

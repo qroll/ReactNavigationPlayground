@@ -53,8 +53,9 @@ function TabBar({ state, descriptors, navigation }) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1 }}>
-            <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
+            style={{ flex: 1 }}
+            key={index}>
+            <Text style={{ color: isFocused ? '#673ab7' : '#222', textAlign: 'center' }}>
               {label}
             </Text>
           </TouchableOpacity>
