@@ -1,18 +1,35 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 
 function TabBar({ state, descriptors, navigation }) {
+  const animation = useRef(new Animated.Value(1)).current;
+  const tabBarVisible = useRef(true);
+
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
-  console.log('@@@ descriptors', descriptors);
+  // if (focusedOptions.tabBarVisible === false) {
+  //   return null;
+  // }
 
-  if (focusedOptions.tabBarVisible === false) {
-    return null;
-  }
+  useEffect(() => {
+    console.log('@@@ tab bar visible?', focusedOptions.tabBarVisible);
+
+    if (tabBarVisible.current && !focusedOptions.tabBarVisible) {
+      Animated.timing(animation, { toValue: 0, useNativeDriver: true }).start();
+    } else if (!tabBarVisible.current && focusedOptions.tabBarVisible) {
+      Animated.timing(animation, { toValue: 1, useNativeDriver: true }).start();
+    }
+    tabBarVisible.current = focusedOptions.tabBarVisible;
+  }, [animation, focusedOptions]);
 
   return (
-    <View
-      style={{ flexDirection: 'row', height: 40, backgroundColor: 'green' }}>
+    <Animated.View
+      style={{
+        flexDirection: 'row',
+        height: 80,
+        backgroundColor: 'green',
+        opacity: animation,
+      }}>
       {['Home', 'Feature', 'Settings'].map((label, index) => {
         const onPress = () => {
           const event = navigation.emit({
@@ -101,7 +118,7 @@ function TabBar({ state, descriptors, navigation }) {
           </TouchableOpacity>
         );
       })} */}
-    </View>
+    </Animated.View>
   );
 }
 

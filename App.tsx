@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   DarkTheme,
   DefaultTheme,
+  getFocusedRouteNameFromRoute,
   NavigationContainer,
 } from '@react-navigation/native';
 import {
@@ -139,12 +140,27 @@ function SettingsStackScreen() {
   );
 }
 
-function TabScreen() {
+function showTabBar(route) {
+  const routeName = getFocusedRouteNameFromRoute(route);
+
+  console.log('@@@ route.name', routeName);
+  return routeName !== 'AScreen1';
+}
+
+function TabScreen({ navigation, route }) {
   return (
     <Tab.Navigator
       backBehavior="history"
       tabBar={(props) => <TabBar {...props} />}>
-      <Tab.Screen name="Phantom" component={PhantomStackScreen} />
+      <Tab.Screen
+        name="Phantom"
+        component={PhantomStackScreen}
+        options={({ route }) => {
+          return {
+            tabBarVisible: showTabBar(route),
+          };
+        }}
+      />
     </Tab.Navigator>
   );
 }

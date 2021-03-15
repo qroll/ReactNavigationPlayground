@@ -44,6 +44,18 @@ const HomeScreen = ({ navigation, route }) => {
         title="Update the title"
         onPress={() => navigation.setOptions({ title: 'Updated!' })}
       />
+      <Button
+        title="Go to Feature A"
+        onPress={() => navigation.navigate('AStartScreen')}
+        // onPress={() => navigation.push('Tabs', {
+        //     screen: 'Phantom',
+        //     params: { screen: 'AStartScreen' },
+        //   })}
+        //   onPress={() => navigation.push('HomeTab', {
+        //     itemId: 85,
+        //     otherParam: 'anything you want here',
+        //   })}
+      />
     </View>
   );
 };
