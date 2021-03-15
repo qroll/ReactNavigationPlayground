@@ -9,8 +9,46 @@ function TabBar({ state, descriptors, navigation }) {
   }
 
   return (
-    <View style={{ flexDirection: 'row', height: 40 }}>
-      {state.routes.map((route, index) => {
+    <View
+      style={{ flexDirection: 'row', height: 40, backgroundColor: 'green' }}>
+      {['Home', 'Feature', 'Settings'].map((label, index) => {
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: label,
+            canPreventDefault: true,
+          });
+
+          if (!event.defaultPrevented) {
+            navigation.navigate(label);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: label,
+          });
+        };
+
+        return (
+          <TouchableOpacity
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{ flex: 1 }}
+            key={index}>
+            <Text
+              style={{
+                color: '#222',
+                textAlign: 'center',
+              }}>
+              {label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+
+      {/* {state.routes.map((route, index) => {
         if (route.name === 'Phantom') {
           return null;
         }
@@ -60,7 +98,7 @@ function TabBar({ state, descriptors, navigation }) {
             </Text>
           </TouchableOpacity>
         );
-      })}
+      })} */}
     </View>
   );
 }
