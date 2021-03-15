@@ -6,7 +6,7 @@ import { NavigationRef } from './NavigationRef';
 import { produce } from 'immer';
 
 function DetailsScreen({ navigation, route }) {
-  const { itemId, otherParam } = route.params;
+  const { itemId, otherParam } = route.params ?? {};
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Details Screen</Text>

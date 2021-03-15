@@ -3,7 +3,7 @@ import { Button, View, Text } from 'react-native';
 import { withLogger } from './withLogger';
 
 function OptionScreen({ navigation, route }) {
-  const { itemId, otherParam } = route.params;
+  const { itemId, otherParam } = route.params ?? {};
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Option Screen</Text>

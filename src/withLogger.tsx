@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { NavigationRef } from './NavigationRef';
 
 export const withLogger = (Component, options?) => (props) => {
   // console.log(

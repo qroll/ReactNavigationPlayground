@@ -8,12 +8,7 @@ export function FeatureScreen({ navigation }) {
       <Text>Feature Tab</Text>
       <Button
         title="Go to Feature A"
-        onPress={() =>
-          navigation.navigate('Tabs', {
-            screen: 'Phantom',
-            params: { screen: 'AStartScreen' },
-          })
-        }
+        onPress={() => navigation.navigate('AStartScreen')}
       />
       <Button
         title="Go to Feature B"

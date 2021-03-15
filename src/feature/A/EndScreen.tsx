@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { nanoid } from 'nanoid/non-secure';
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
 import { NavigationRef } from '../../NavigationRef';
@@ -11,30 +10,35 @@ function AEndScreen({ navigation, route }) {
       <Text>A Screen 1</Text>
       <Button
         title="Go to A Start Screen"
-        onPress={() => navigation.navigate('AStartScreen')}
-      />
-      <Button
-        title="Exit A"
         onPress={() => {
+          // merge screen
           const state = NavigationRef.current?.getRootState();
 
+          console.log('@@@ BEFORE STATE', JSON.stringify(state));
+
           const newState = produce(state, (draftState) => {
-            const tabState = draftState?.routes[0].state;
+            const firstTab = draftState.routes[0].state;
+            const firstPhantomStack = firstTab?.routes[0].state;
+            const lastTab = draftState.routes[2].state;
+            const lastPhantomStack = lastTab?.routes[0].state;
 
-            const phantomTab = tabState.routes[3];
-            delete phantomTab.key;
-            delete phantomTab.params;
-            delete phantomTab.state;
+            lastPhantomStack.routes = [
+              ...firstPhantomStack.routes,
+              // ...lastPhantomStack.routes,
+            ];
+            lastPhantomStack.index = lastPhantomStack.routes.length - 1;
 
-            phantomTab.key = nanoid();
-
-            tabState.index = 1;
+            draftState.routes.splice(0, 1);
+            draftState.routes.splice(0, 1);
+            draftState.index = draftState.routes.length - 1;
           });
 
-          console.log('@@@ BEFORE STATE', JSON.stringify(state));
           console.log('@@@ AFTER STATE', JSON.stringify(newState));
 
           NavigationRef.current?.resetRoot(newState);
+
+          // pop
+          // NavigationRef.current?.dispatch
         }}
       />
     </View>
