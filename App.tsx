@@ -19,7 +19,7 @@ import OptionScreen from './src/OptionScreen';
 import ModalScreen from './src/ModalScreen';
 import MaintenanceScreen from './src/MaintenanceScreen';
 import { NavigationRef } from './src/NavigationRef';
-import { Button, StyleProp, ViewStyle } from 'react-native';
+import { Button, StyleProp, View, ViewStyle } from 'react-native';
 import StartToDetailsScreen from './src/StartToDetailsScreen';
 import TabBar from './src/TabBar';
 import AStartScreen from './src/feature/A/StartScreen';
@@ -52,6 +52,10 @@ function PhantomStackScreen() {
         // }),
         ...TransitionPresets.SlideFromRightIOS,
       }}>
+      <Stack.Screen name="HomeTab" component={HomeScreen} />
+      <Stack.Screen name="FeatureTab" component={FeatureScreen} />
+      <Stack.Screen name="SettingsTab" component={SettingsScreen} />
+
       <Stack.Screen
         name="StartToDetails"
         component={StartToDetailsScreen}
@@ -138,9 +142,6 @@ function TabScreen() {
   return (
     <>
       <Tab.Navigator backBehavior="history" tabBar={() => null}>
-        <Tab.Screen name="HomeTab" component={HomeScreen} />
-        <Tab.Screen name="FeatureTab" component={FeatureScreen} />
-        <Tab.Screen name="SettingsTab" component={SettingsScreen} />
         <Tab.Screen name="Phantom" component={PhantomStackScreen} />
       </Tab.Navigator>
     </>
