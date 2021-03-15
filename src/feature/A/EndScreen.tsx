@@ -6,12 +6,7 @@ function AEndScreen({ navigation, route }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>A Screen 1</Text>
-      <Button
-        title="Go to A Start Screen"
-        onPress={() =>
-          navigation.pop(2)
-        }
-      />
+      <Button title="Go to A Start Screen" onPress={() => navigation.pop(2)} />
     </View>
   );
 }

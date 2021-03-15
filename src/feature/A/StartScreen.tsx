@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
+import { store } from '../../redux/store';
 import { withLogger } from '../../withLogger';
 
 function AStartScreen({ navigation, route }) {
@@ -8,15 +9,14 @@ function AStartScreen({ navigation, route }) {
       <Text>A Start Screen</Text>
       <Button
         title="Go to A Screen 1"
-        onPress={() =>
-          navigation.navigate('AScreen1')
-        }
+        onPress={() => {
+          navigation.navigate('AScreen1');
+          store.dispatch({ type: 'hide' });
+        }}
       />
       <Button
         title="Go to A End Screen"
-        onPress={() =>
-          navigation.push('AEndScreen')
-        }
+        onPress={() => navigation.push('AEndScreen')}
       />
     </View>
   );

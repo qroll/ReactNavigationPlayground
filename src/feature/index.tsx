@@ -12,10 +12,12 @@ export function FeatureScreen({ navigation }) {
         //     screen: 'Phantom',
         //     params: { screen: 'AStartScreen' },
         //   })}
-        onPress={() => navigation.push('Tabs', {
+        onPress={() =>
+          navigation.push('Tabs', {
             screen: 'Phantom',
             params: { screen: 'AStartScreen' },
-          })}
+          })
+        }
         //   onPress={() => navigation.push('HomeTab', {
         //     itemId: 85,
         //     otherParam: 'anything you want here',
@@ -23,15 +25,14 @@ export function FeatureScreen({ navigation }) {
       />
       <Button
         title="Go to Feature B"
-        onPress={() => navigation.navigate('Tabs', {
+        onPress={() =>
+          navigation.navigate('Tabs', {
             screen: 'Phantom',
             params: { screen: 'BStartScreen' },
-          })}
+          })
+        }
       />
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
+      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button title="Pop" onPress={() => navigation.pop()} />
     </View>
