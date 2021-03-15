@@ -69,6 +69,11 @@ function PhantomStackScreen() {
         }}
       />
       <Stack.Screen
+        name="AScreen1"
+        component={AScreen1}
+        options={{ ...TransitionPresets.SlideFromRightIOS }}
+      />
+      <Stack.Screen
         name="AEndScreen"
         component={AEndScreen}
         options={{
@@ -179,11 +184,6 @@ function App() {
             // }),
             ...TransitionPresets.SlideFromRightIOS,
           }}
-        />
-        <Root.Screen
-          name="AScreen1"
-          component={AScreen1}
-          options={{ ...TransitionPresets.SlideFromRightIOS }}
         />
         <Root.Screen name="Option" component={OptionScreen} />
       </Root.Navigator>

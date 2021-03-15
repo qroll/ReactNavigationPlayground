@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 function TabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
+  console.log('@@@ descriptors', descriptors);
+
   if (focusedOptions.tabBarVisible === false) {
     return null;
   }
