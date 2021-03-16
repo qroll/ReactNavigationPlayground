@@ -28,10 +28,15 @@ import AEndScreen from './src/feature/A/EndScreen';
 import FeatureScreen from './src/feature';
 import DumbTabBar from './src/DumbTabBar';
 import { store } from './src/redux/store';
+import {
+  createCustomNavigator,
+  createCustomTopNavigator,
+} from './src/CustomNavigator';
 
+const PhantomStack = createCustomNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const Root = createStackNavigator();
+const Root = createCustomTopNavigator();
 
 const defaultCardStyleOptions: StyleProp<ViewStyle> = {
   // backgroundColor: 'black',
@@ -39,24 +44,15 @@ const defaultCardStyleOptions: StyleProp<ViewStyle> = {
 
 function PhantomStackScreen() {
   return (
-    <Stack.Navigator
+    <PhantomStack.Navigator
       screenOptions={{
-        // transitionSpec: {
-        //   open: TransitionSpecs.FadeInFromBottomAndroidSpec,
-        //   close: TransitionSpecs.FadeInFromBottomAndroidSpec,
-        // },
-        // cardStyleInterpolator: ({ current: { progress } }) => ({
-        //   containerStyle: {
-        //     opacity: progress,
-        //   },
-        // }),
         ...TransitionPresets.SlideFromRightIOS,
       }}>
-      <Stack.Screen name="HomeTab" component={HomeScreen} />
-      <Stack.Screen name="FeatureTab" component={FeatureScreen} />
-      <Stack.Screen name="SettingsTab" component={SettingsScreen} />
+      <PhantomStack.Screen name="HomeTab" component={HomeScreen} />
+      <PhantomStack.Screen name="FeatureTab" component={FeatureScreen} />
+      <PhantomStack.Screen name="SettingsTab" component={SettingsScreen} />
 
-      <Stack.Screen
+      <PhantomStack.Screen
         name="StartToDetails"
         component={StartToDetailsScreen}
         options={{
@@ -64,7 +60,7 @@ function PhantomStackScreen() {
           cardStyle: defaultCardStyleOptions,
         }}
       />
-      <Stack.Screen
+      <PhantomStack.Screen
         name="AStartScreen"
         component={AStartScreen}
         options={{
@@ -72,29 +68,15 @@ function PhantomStackScreen() {
           cardStyle: defaultCardStyleOptions,
         }}
       />
-      <Stack.Screen
+      <PhantomStack.Screen
         name="AEndScreen"
         component={AEndScreen}
         options={{
           title: 'AEndScreen',
           cardStyle: defaultCardStyleOptions,
-          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          // transitionSpec: {
-          //   open: {
-          //     animation: 'timing',
-          //     config: {
-          //       duration: 500,
-          //       easing: (value) => value,
-          //     },
-          //   },
-          //   close: TransitionSpecs.FadeInFromBottomAndroidSpec,
-          // },
-          // animationTypeForReplace: "pop"
-          // animationEnabled: false,
-          // ...TransitionPresets.SlideFromRightIOS
         }}
       />
-    </Stack.Navigator>
+    </PhantomStack.Navigator>
   );
 }
 
@@ -141,7 +123,7 @@ function SettingsStackScreen() {
 function TabScreen() {
   return (
     <>
-      <Tab.Navigator backBehavior="history" tabBar={() => null}>
+      <Tab.Navigator backBehavior="history" tabBar={DumbTabBar}>
         <Tab.Screen name="Phantom" component={PhantomStackScreen} />
       </Tab.Navigator>
     </>
@@ -155,7 +137,7 @@ function App() {
         ref={NavigationRef}
         theme={DefaultTheme}
         onStateChange={(state) => {
-          console.log(JSON.stringify(state, null, 2));
+          console.log('@@@ onStateChange', JSON.stringify(state));
           store.dispatch({ type: 'nav', navState: state });
         }}>
         <Root.Navigator
@@ -196,7 +178,6 @@ function App() {
           <Root.Screen name="Option" component={OptionScreen} />
         </Root.Navigator>
       </NavigationContainer>
-      <DumbTabBar />
     </Provider>
   );
 }
