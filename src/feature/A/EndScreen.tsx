@@ -23,15 +23,22 @@ function AEndScreen({ navigation, route }) {
             const lastTab = draftState.routes[2].state;
             const lastPhantomStack = lastTab?.routes[0].state;
 
-            lastPhantomStack.routes = [
-              ...firstPhantomStack.routes,
-              // ...lastPhantomStack.routes,
-            ];
-            lastPhantomStack.index = lastPhantomStack.routes.length - 1;
+            // lastPhantomStack.routes = [
+            //   ...firstPhantomStack.routes,
+            //   // ...lastPhantomStack.routes,
+            // ];
+            // lastPhantomStack.index = lastPhantomStack.routes.length - 1;
 
+            firstPhantomStack.routes = [
+              ...firstPhantomStack.routes,
+              ...lastPhantomStack.routes,
+            ];
+            firstPhantomStack.index = firstPhantomStack.routes.length - 1;
+
+            draftState.routes.splice(2, 1);
             draftState.routes.splice(0, 1);
-            draftState.routes.splice(0, 1);
-            draftState.index = draftState.routes.length - 1;
+            draftState.routes.push(firstTab);
+            draftState.index = 1;
           });
 
           console.log('@@@ AFTER STATE', JSON.stringify(newState));
@@ -39,7 +46,7 @@ function AEndScreen({ navigation, route }) {
           NavigationRef.current?.resetRoot(newState);
 
           // pop
-          // NavigationRef.current?.dispatch
+          // NavigationRef.current?.goBack();
         }}
       />
     </View>
