@@ -33,10 +33,10 @@ import {
   createCustomTopNavigator,
 } from './src/CustomNavigator';
 
-const PhantomStack = createCustomNavigator();
+const PhantomStack = createStackNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const Root = createCustomTopNavigator();
+const Root = createStackNavigator();
 
 const defaultCardStyleOptions: StyleProp<ViewStyle> = {
   // backgroundColor: 'black',
@@ -138,7 +138,6 @@ function App() {
         theme={DefaultTheme}
         onStateChange={(state) => {
           console.log('@@@ onStateChange', JSON.stringify(state));
-          store.dispatch({ type: 'nav', navState: state });
         }}>
         <Root.Navigator
           mode="modal"
@@ -158,15 +157,6 @@ function App() {
             name="Details"
             component={DetailsScreen}
             options={{
-              // transitionSpec: {
-              //   open: TransitionSpecs.TransitionIOSSpec,
-              //   close: TransitionSpecs.TransitionIOSSpec,
-              // },
-              // cardStyleInterpolator: ({ current: { progress } }) => ({
-              //   containerStyle: {
-              //     opacity: progress,
-              //   },
-              // }),
               ...TransitionPresets.SlideFromRightIOS,
             }}
           />

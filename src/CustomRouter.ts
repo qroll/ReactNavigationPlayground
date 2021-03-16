@@ -32,6 +32,7 @@ export const CustomTopRouter = (options) => {
     ...stackRouter,
 
     getStateForAction(state: NavigationState, action, options) {
+      console.log('@@@ state', JSON.stringify(state));
       switch (action.type) {
         // case 'NAVIGATE_TO_FIRST_SCREEN': {
         //   // let's hard code this for now
