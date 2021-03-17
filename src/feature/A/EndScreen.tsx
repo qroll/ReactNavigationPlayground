@@ -11,7 +11,24 @@ function AEndScreen({ navigation, route }) {
       <Text>A Screen 1</Text>
       <Button
         title="Go to A Start Screen"
-        onPress={() => navigation.navigate('AStartScreen')}
+        // onPress={() => {
+        //   const state = NavigationRef.current?.getRootState();
+
+        //   console.log('@@@ BEFORE STATE', JSON.stringify(state));
+
+        //   const newState = produce(state, (draftState) => {
+        //     draftState.routes.splice(2, 1);
+        //     draftState.routes.splice(1, 1);
+        //   });
+
+        //   console.log('@@@ AFTER STATE', JSON.stringify(newState));
+
+        //   NavigationRef.current?.resetRoot(newState);
+        // }}
+        onPress={() => {
+          navigation.goBack();
+          navigation.goBack();
+        }}
       />
       <Button
         title="Exit A"
