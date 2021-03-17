@@ -3,9 +3,13 @@ import * as React from 'react';
 import { NavigationRef } from './NavigationRef';
 
 export const withLogger = (Component, options?) => (props) => {
-  console.log(
-    `@@@ ${Component.name} => ${JSON.stringify(props.route.params, null, 2)}`,
-  );
+  // console.log(
+  //   `@@@ ${Component.name} => ${JSON.stringify(props.route.params, null, 2)}`,
+  // );
+  React.useEffect(() => {
+    console.log(`@@@ ${Component.name} mounted`);
+    () => console.log(`@@@ ${Component.name} unmounted`);
+  }, []);
 
   return <Component {...props} />;
 };
