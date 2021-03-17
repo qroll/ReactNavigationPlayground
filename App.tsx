@@ -1,14 +1,8 @@
 import * as React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from '@react-navigation/native';
-import {
-  CardStyleInterpolators,
   createStackNavigator,
   TransitionPresets,
-  TransitionSpecs,
 } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './src/HomeScreen';
@@ -24,9 +18,14 @@ import TabBar from './src/TabBar';
 import AStartScreen from './src/feature/A/StartScreen';
 import AScreen1 from './src/feature/A/Screen1';
 import AEndScreen from './src/feature/A/EndScreen';
+import BStartScreen from './src/feature/B/BStartScreen';
+import BScreen1 from './src/feature/B/BScreen1';
+import BEndScreen from './src/feature/B/BEndScreen';
 import { FeatureScreen } from './src/feature';
 
-const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const PhantomStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Root = createStackNavigator();
 
@@ -36,20 +35,11 @@ const defaultCardStyleOptions: StyleProp<ViewStyle> = {
 
 function PhantomStackScreen() {
   return (
-    <Stack.Navigator
+    <PhantomStack.Navigator
       screenOptions={{
-        // transitionSpec: {
-        //   open: TransitionSpecs.FadeInFromBottomAndroidSpec,
-        //   close: TransitionSpecs.FadeInFromBottomAndroidSpec,
-        // },
-        // cardStyleInterpolator: ({ current: { progress } }) => ({
-        //   containerStyle: {
-        //     opacity: progress,
-        //   },
-        // }),
         ...TransitionPresets.SlideFromRightIOS,
       }}>
-      <Stack.Screen
+      <PhantomStack.Screen
         name="StartToDetails"
         component={StartToDetailsScreen}
         options={{
@@ -57,77 +47,28 @@ function PhantomStackScreen() {
           cardStyle: defaultCardStyleOptions,
         }}
       />
-      <Stack.Screen
-        name="AStartScreen"
-        component={AStartScreen}
-        options={{
-          title: 'AStartScreen',
-          cardStyle: defaultCardStyleOptions,
-        }}
-      />
-       <Stack.Screen
-        name="AEndScreen"
-        component={AEndScreen}
-        options={{
-          title: 'AEndScreen',
-          cardStyle: defaultCardStyleOptions,
-          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          // transitionSpec: {
-          //   open: {
-          //     animation: 'timing',
-          //     config: {
-          //       duration: 500,
-          //       easing: (value) => value,
-          //     },
-          //   },
-          //   close: TransitionSpecs.FadeInFromBottomAndroidSpec,
-          // },
-          // animationTypeForReplace: "pop"
-          // animationEnabled: false,
-          // ...TransitionPresets.SlideFromRightIOS
-        }}
-      />
-    </Stack.Navigator>
+      <PhantomStack.Screen name="AStartScreen" component={AStartScreen} />
+      <PhantomStack.Screen name="AEndScreen" component={AEndScreen} />
+      <PhantomStack.Screen name="BStartScreen" component={BStartScreen} />
+      <PhantomStack.Screen name="BEndScreen" component={BEndScreen} />
+    </PhantomStack.Navigator>
   );
 }
 
 function HomeStackScreen() {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'Overview',
-          cardStyle: defaultCardStyleOptions,
-        }}
-      />
-      {/* <Stack.Screen
-        name="Details"
-        component={DetailsScreen}
-        options={{
-          title: 'Overview',
-          cardStyle: defaultCardStyleOptions,
-        }}
-      /> */}
-    </Stack.Navigator>
+    <HomeStack.Navigator initialRouteName="Home">
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+    </HomeStack.Navigator>
   );
 }
 
 function SettingsStackScreen() {
   return (
-    <Stack.Navigator initialRouteName="Settings">
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ cardStyle: defaultCardStyleOptions }}
-      />
-      <Stack.Screen
-        name="Option"
-        component={OptionScreen}
-        options={{ cardStyle: defaultCardStyleOptions }}
-      />
-    </Stack.Navigator>
+    <SettingsStack.Navigator initialRouteName="Settings">
+      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen name="Option" component={OptionScreen} />
+    </SettingsStack.Navigator>
   );
 }
 
@@ -135,8 +76,7 @@ function TabScreen() {
   return (
     <Tab.Navigator
       backBehavior="history"
-      tabBar={(props) => <TabBar {...props} />}
-      >
+      tabBar={(props) => <TabBar {...props} />}>
       <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
@@ -150,32 +90,38 @@ function App() {
     <NavigationContainer
       ref={NavigationRef}
       theme={DefaultTheme}
-      onStateChange={(state) => console.log(JSON.stringify(state, null, 2))}
-      >
+      onStateChange={(state) =>
+        console.log('@@@ state', JSON.stringify(state))
+      }>
       <Root.Navigator
         mode="modal"
-        screenOptions={{ cardStyle: { backgroundColor: 'red' }, ...TransitionPresets.SlideFromRightIOS, }}>
-        <Root.Screen name="Tabs" component={TabScreen} options={{headerShown: false}} />
+        screenOptions={{
+          cardStyle: { backgroundColor: 'red' },
+          ...TransitionPresets.SlideFromRightIOS,
+        }}>
+        <Root.Screen
+          name="Tabs"
+          component={TabScreen}
+          options={{ headerShown: false }}
+        />
         {/* startPage */}
         <Root.Screen name="Modal" component={ModalScreen} />
         <Root.Screen name="Maintenance" component={MaintenanceScreen} />
         <Root.Screen
           name="Details"
           component={DetailsScreen}
-          options={{
-            // transitionSpec: {
-            //   open: TransitionSpecs.TransitionIOSSpec,
-            //   close: TransitionSpecs.TransitionIOSSpec,
-            // },
-            // cardStyleInterpolator: ({ current: { progress } }) => ({
-            //   containerStyle: {
-            //     opacity: progress,
-            //   },
-            // }),
-            ...TransitionPresets.SlideFromRightIOS,
-          }}
+          options={{ ...TransitionPresets.SlideFromRightIOS }}
         />
-        <Root.Screen name="AScreen1" component={AScreen1} options={{...TransitionPresets.SlideFromRightIOS}}/>
+        <Root.Screen
+          name="AScreen1"
+          component={AScreen1}
+          options={{ ...TransitionPresets.SlideFromRightIOS }}
+        />
+        <Root.Screen
+          name="BScreen1"
+          component={BScreen1}
+          options={{ ...TransitionPresets.SlideFromRightIOS }}
+        />
         <Root.Screen name="Option" component={OptionScreen} />
       </Root.Navigator>
     </NavigationContainer>
