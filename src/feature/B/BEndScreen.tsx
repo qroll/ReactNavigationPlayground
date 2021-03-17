@@ -14,7 +14,7 @@ function BEndScreen({ navigation, route }) {
         title="Leave Feature B"
         onPress={() => {
           navigation.navigate('BStartScreen');
-          navigation.pop();
+          navigation.goBack();
         }}
       />
     </View>

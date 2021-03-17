@@ -8,13 +8,7 @@ function AScreen1({ navigation, route }) {
       <Text>A Screen 1</Text>
       <Button
         title="Go to A End Screen"
-        onPress={() =>
-        //   navigation.navigate('AEndScreen')
-          navigation.push('Tabs', {
-            screen: 'Phantom',
-            params: { screen: 'AEndScreen' },
-          })
-        }
+        onPress={() => navigation.navigate('AEndScreen')}
       />
     </View>
   );
