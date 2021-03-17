@@ -18,35 +18,26 @@ function AEndScreen({ navigation, route }) {
           console.log('@@@ BEFORE STATE', JSON.stringify(state));
 
           const newState = produce(state, (draftState) => {
-            const firstTab = draftState.routes[0].state;
-            const firstPhantomStack = firstTab?.routes[0].state;
-            const lastTab = draftState.routes[2].state;
+            const secondTab = draftState.routes[1].state;
+            const secondPhantomStack = secondTab?.routes[0].state;
+            const lastTab = draftState.routes[3].state;
             const lastPhantomStack = lastTab?.routes[0].state;
 
-            // lastPhantomStack.routes = [
-            //   ...firstPhantomStack.routes,
-            //   // ...lastPhantomStack.routes,
-            // ];
-            // lastPhantomStack.index = lastPhantomStack.routes.length - 1;
-
-            firstPhantomStack.routes = [
-              ...firstPhantomStack.routes,
+            secondPhantomStack.routes = [
+              ...secondPhantomStack.routes,
               ...lastPhantomStack.routes,
             ];
-            firstPhantomStack.index = firstPhantomStack.routes.length - 1;
+            secondPhantomStack.index = 0;
 
-            draftState.routes.splice(2, 1);
-            draftState.routes.splice(0, 1);
-            draftState.routes.push(firstTab);
-            draftState.index = 1;
+            draftState.routes.splice(3, 1);
+            draftState.routes.splice(1, 1);
+            draftState.routes.push(secondTab);
+            draftState.index = 2;
           });
 
           console.log('@@@ AFTER STATE', JSON.stringify(newState));
 
           NavigationRef.current?.resetRoot(newState);
-
-          // pop
-          // NavigationRef.current?.goBack();
         }}
       />
     </View>
