@@ -48,7 +48,31 @@ function PhantomStackScreen() {
         }}
       />
       <PhantomStack.Screen name="AStartScreen" component={AStartScreen} />
-      <PhantomStack.Screen name="AEndScreen" component={AEndScreen} />
+      <PhantomStack.Screen
+        name="AEndScreen"
+        component={AEndScreen}
+        options={({ navigation, route }) => {
+          // can either check on state or check route params
+          return {
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {
+                  duration: route.params?.doNotAnimate ? 0 : 1000,
+                  easing: (value) => value,
+                },
+              },
+              close: {
+                animation: 'timing',
+                config: {
+                  duration: 1000,
+                  easing: (value) => value,
+                },
+              },
+            },
+          };
+        }}
+      />
       <PhantomStack.Screen name="BStartScreen" component={BStartScreen} />
       <PhantomStack.Screen name="BEndScreen" component={BEndScreen} />
     </PhantomStack.Navigator>

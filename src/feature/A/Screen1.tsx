@@ -8,7 +8,9 @@ function AScreen1({ navigation, route }) {
       <Text>A Screen 1</Text>
       <Button
         title="Go to A End Screen"
-        onPress={() => navigation.navigate('AEndScreen')}
+        onPress={() =>
+          navigation.navigate('AEndScreen', { doNotAnimate: true })
+        }
       />
     </View>
   );
