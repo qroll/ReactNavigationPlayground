@@ -2,27 +2,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useIsTabBarVisible } from '../../useTabBarStatus';
+import { useNavigateAfterTabAnimation } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
 function AStartScreen({ navigation, route }) {
-  const shouldNavigateNext = React.useRef(false);
+  const navigateAfterTabAnimation = useNavigateAfterTabAnimation({
+    visible: false,
+  });
 
   const showTabBar = React.useCallback(() => {
     navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
   }, [navigation]);
 
   useFocusEffect(showTabBar);
-
-  const isVisible = useIsTabBarVisible();
-
-  console.log('@@@ isVisible', isVisible);
-
-  React.useEffect(() => {
-    if (!isVisible && shouldNavigateNext.current) {
-      navigation.navigate('AScreen1');
-    }
-  });
 
   return (
     // <ScrollView>
@@ -37,10 +29,7 @@ function AStartScreen({ navigation, route }) {
       <Button
         title="Go to A Screen 1"
         onPress={() => {
-          navigation
-            .dangerouslyGetParent()
-            .setOptions({ tabBarVisible: false });
-          shouldNavigateNext.current = true;
+          navigateAfterTabAnimation('AScreen1');
         }}
       />
       <Button
@@ -82,14 +71,12 @@ function AStartScreen({ navigation, route }) {
           navigation
             .dangerouslyGetParent()
             .setOptions({ tabBarVisible: false });
-          // navigation.navigate('AScreen1');
         }}
       />
       <Button
         title="Show nav bar"
         onPress={() => {
           navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
-          // navigation.navigate('AScreen1');
         }}
       />
     </View>

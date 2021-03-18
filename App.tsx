@@ -96,9 +96,9 @@ function App() {
       <NavigationContainer
         ref={NavigationRef}
         theme={DefaultTheme}
-        onStateChange={(state) =>
-          console.log('@@@ state', JSON.stringify(state))
-        }>
+        onStateChange={(state) => {
+          // console.log('@@@ state', JSON.stringify(state));
+        }}>
         <Root.Navigator
           mode="modal"
           screenOptions={{
