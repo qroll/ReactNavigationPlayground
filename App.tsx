@@ -22,6 +22,7 @@ import BStartScreen from './src/feature/B/BStartScreen';
 import BScreen1 from './src/feature/B/BScreen1';
 import BEndScreen from './src/feature/B/BEndScreen';
 import { FeatureScreen } from './src/feature';
+import { TabBarStatusProvider } from './src/useTabBarStatus';
 
 const HomeStack = createStackNavigator();
 const PhantomStack = createStackNavigator();
@@ -80,8 +81,7 @@ function TabScreen() {
   return (
     <Tab.Navigator
       backBehavior="history"
-      // tabBar={(props) => <TabBar {...props} />}
-    >
+      tabBar={(props) => <TabBar {...props} />}>
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
@@ -92,34 +92,36 @@ function TabScreen() {
 
 function App() {
   return (
-    <NavigationContainer
-      ref={NavigationRef}
-      theme={DefaultTheme}
-      onStateChange={(state) =>
-        console.log('@@@ state', JSON.stringify(state))
-      }>
-      <Root.Navigator
-        mode="modal"
-        screenOptions={{
-          cardStyle: { backgroundColor: 'red' },
-          ...TransitionPresets.SlideFromRightIOS,
-        }}>
-        <Root.Screen
-          name="Tabs"
-          component={TabScreen}
-          options={{ headerShown: false }}
-        />
-        {/* startPage */}
-        <Root.Screen name="Modal" component={ModalScreen} />
-        <Root.Screen name="Maintenance" component={MaintenanceScreen} />
-        <Root.Screen
-          name="Details"
-          component={DetailsScreen}
-          options={{ ...TransitionPresets.SlideFromRightIOS }}
-        />
-        <Root.Screen name="Option" component={OptionScreen} />
-      </Root.Navigator>
-    </NavigationContainer>
+    <TabBarStatusProvider>
+      <NavigationContainer
+        ref={NavigationRef}
+        theme={DefaultTheme}
+        onStateChange={(state) =>
+          console.log('@@@ state', JSON.stringify(state))
+        }>
+        <Root.Navigator
+          mode="modal"
+          screenOptions={{
+            cardStyle: { backgroundColor: 'red' },
+            ...TransitionPresets.SlideFromRightIOS,
+          }}>
+          <Root.Screen
+            name="Tabs"
+            component={TabScreen}
+            options={{ headerShown: false }}
+          />
+          {/* startPage */}
+          <Root.Screen name="Modal" component={ModalScreen} />
+          <Root.Screen name="Maintenance" component={MaintenanceScreen} />
+          <Root.Screen
+            name="Details"
+            component={DetailsScreen}
+            options={{ ...TransitionPresets.SlideFromRightIOS }}
+          />
+          <Root.Screen name="Option" component={OptionScreen} />
+        </Root.Navigator>
+      </NavigationContainer>
+    </TabBarStatusProvider>
   );
 }
 

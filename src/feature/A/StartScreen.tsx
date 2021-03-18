@@ -1,68 +1,67 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { Button, View, Text, InteractionManager } from 'react-native';
+import { Button, View, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useIsTabBarVisible } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
-function Deferred() {
-  const p = (this.promise = new Promise((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  }));
-  this.then = p.then.bind(p);
-  this.catch = p.catch.bind(p);
-  if (p.finally) {
-    this.finally = p.finally.bind(p);
-  }
-}
-
 function AStartScreen({ navigation, route }) {
+  const shouldNavigateNext = React.useRef(false);
+
   const showTabBar = React.useCallback(() => {
     navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
   }, [navigation]);
 
   useFocusEffect(showTabBar);
 
+  const isVisible = useIsTabBarVisible();
+
+  console.log('@@@ isVisible', isVisible);
+
+  React.useEffect(() => {
+    if (!isVisible && shouldNavigateNext.current) {
+      navigation.navigate('AScreen1');
+    }
+  });
+
   return (
-    <ScrollView>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#ddd',
-        }}>
-        <Text>A Start Screen</Text>
-        <Button
-          title="Go to A Screen 1"
-          onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: false });
-            navigation.navigate('AScreen1');
-          }}
-        />
-        <Button
-          title="Go to A End Screen"
-          onPress={() => navigation.push('AEndScreen')}
-        />
-        <Button
-          title="Hide nav bar"
-          onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: false });
-          }}
-        />
-        <Button
-          title="Show nav bar"
-          onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: true });
-          }}
-        />
-        <Text style={{ width: 30, textAlign: 'center' }}>
+    // <ScrollView>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ddd',
+      }}>
+      <Text>A Start Screen</Text>
+      <Button
+        title="Go to A Screen 1"
+        onPress={() => {
+          navigation
+            .dangerouslyGetParent()
+            .setOptions({ tabBarVisible: false });
+          shouldNavigateNext.current = true;
+        }}
+      />
+      <Button
+        title="Go to A End Screen"
+        onPress={() => navigation.push('AEndScreen')}
+      />
+      <Button
+        title="Hide nav bar"
+        onPress={() => {
+          navigation
+            .dangerouslyGetParent()
+            .setOptions({ tabBarVisible: false });
+        }}
+      />
+      <Button
+        title="Show nav bar"
+        onPress={() => {
+          navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+        }}
+      />
+      {/* <Text style={{ width: 200, textAlign: 'center' }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec est
           eu nisi consectetur dignissim nec id erat. Phasellus mattis varius est
           quis viverra. Ut elementum fermentum pretium. Vivamus non mattis
@@ -76,27 +75,25 @@ function AStartScreen({ navigation, route }) {
           consectetur molestie. Donec magna elit, finibus nec ex at, lobortis
           molestie tortor. Praesent tristique, urna sed auctor egestas, ante
           lorem ultricies nulla, placerat posuere quam purus a lacus.
-        </Text>
-        <Button
-          title="Hide nav bar"
-          onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: false });
-            // navigation.navigate('AScreen1');
-          }}
-        />
-        <Button
-          title="Show nav bar"
-          onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: true });
-            // navigation.navigate('AScreen1');
-          }}
-        />
-      </View>
-    </ScrollView>
+        </Text> */}
+      <Button
+        title="Hide nav bar"
+        onPress={() => {
+          navigation
+            .dangerouslyGetParent()
+            .setOptions({ tabBarVisible: false });
+          // navigation.navigate('AScreen1');
+        }}
+      />
+      <Button
+        title="Show nav bar"
+        onPress={() => {
+          navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+          // navigation.navigate('AScreen1');
+        }}
+      />
+    </View>
+    // </ScrollView>
   );
 }
 

@@ -1,56 +1,55 @@
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
-import produce from 'immer';
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { Animated, View, Text, TouchableOpacity, Easing } from 'react-native';
+import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Animated, { Easing } from 'react-native-reanimated';
+import { TabBarStatusContext } from './useTabBarStatus';
 
 function TabBar({ state, descriptors, navigation }) {
+  const { setVisible } = useContext(TabBarStatusContext);
+
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
-  console.log('@@@ I LIKE PIE', focusedOptions);
+  const animation = useRef(new Animated.Value(0)).current;
 
-  const animation = useRef(new Animated.Value(1)).current;
   useEffect(() => {
     console.log('@@@ ANIMATE TAB BAR');
     if (focusedOptions.tabBarVisible) {
       console.log('@@@ SHOW');
       Animated.timing(animation, {
         toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
+        duration: 500,
         easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
       }).start(() => {
-        if (focusedOptions.deferred) {
-          focusedOptions.deferred.resolve();
-        }
+        setVisible(true);
       });
     } else {
       console.log('@@@ HIDE');
       Animated.timing(animation, {
         toValue: 0,
-        duration: 2000,
-        useNativeDriver: true,
+        duration: 500,
+        easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
       }).start(() => {
-        if (focusedOptions.deferred) {
-          focusedOptions.deferred.resolve();
-        }
+        setVisible(false);
       });
     }
-  }, [focusedOptions, animation]);
+  }, [focusedOptions.tabBarVisible, setVisible, animation]);
 
   return (
     <Animated.View
       style={{
         backgroundColor: 'green',
         flexDirection: 'row',
-        height: 50,
-        transform: [
-          {
-            translateY: animation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1000, 0],
-            }),
-          },
-        ],
+        height: Animated.interpolate(animation, {
+          inputRange: [0, 1],
+          outputRange: [0, 50],
+        }),
+        // transform: [
+        //   {
+        //     translateY: Animated.interpolate(animation, {
+        //       inputRange: [0, 1],
+        //       outputRange: [1000, 0],
+        //     }),
+        //   },
+        // ],
       }}>
       <Text>LALALALALA</Text>
     </Animated.View>
