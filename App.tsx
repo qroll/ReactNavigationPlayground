@@ -47,10 +47,14 @@ function PhantomStackScreen() {
           cardStyle: defaultCardStyleOptions,
         }}
       />
+      <PhantomStack.Screen name="Feature" component={FeatureScreen} />
       <PhantomStack.Screen name="AStartScreen" component={AStartScreen} />
       <PhantomStack.Screen name="AEndScreen" component={AEndScreen} />
       <PhantomStack.Screen name="BStartScreen" component={BStartScreen} />
       <PhantomStack.Screen name="BEndScreen" component={BEndScreen} />
+
+      <Root.Screen name="AScreen1" component={AScreen1} />
+      <Root.Screen name="BScreen1" component={BScreen1} />
     </PhantomStack.Navigator>
   );
 }
@@ -76,9 +80,10 @@ function TabScreen() {
   return (
     <Tab.Navigator
       backBehavior="history"
-      tabBar={(props) => <TabBar {...props} />}>
-      <Tab.Screen name="HomeTab" component={HomeScreen} />
+      // tabBar={(props) => <TabBar {...props} />}
+    >
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
+      <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
       <Tab.Screen name="Phantom" component={PhantomStackScreen} />
     </Tab.Navigator>
@@ -110,16 +115,6 @@ function App() {
         <Root.Screen
           name="Details"
           component={DetailsScreen}
-          options={{ ...TransitionPresets.SlideFromRightIOS }}
-        />
-        <Root.Screen
-          name="AScreen1"
-          component={AScreen1}
-          options={{ ...TransitionPresets.SlideFromRightIOS }}
-        />
-        <Root.Screen
-          name="BScreen1"
-          component={BScreen1}
           options={{ ...TransitionPresets.SlideFromRightIOS }}
         />
         <Root.Screen name="Option" component={OptionScreen} />
