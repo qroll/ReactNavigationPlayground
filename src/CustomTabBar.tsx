@@ -12,7 +12,7 @@ export function CustomTabBar() {
 
   useEffect(() => {
     if (tabBarVisible) {
-      console.log('@@@ SHOW TAB BAR');
+      console.log('@@@ SHOW CUSTOM TAB BAR');
       Animated.timing(animation, {
         toValue: 1,
         duration: 200,
@@ -21,7 +21,7 @@ export function CustomTabBar() {
         setVisible(true);
       });
     } else {
-      console.log('@@@ HIDE TAB BAR');
+      console.log('@@@ HIDE CUSTOM TAB BAR');
       Animated.timing(animation, {
         toValue: 0,
         duration: 200,

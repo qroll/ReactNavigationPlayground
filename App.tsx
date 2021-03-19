@@ -80,12 +80,15 @@ function SettingsStackScreen() {
 
 function TabScreen() {
   return (
-    <Tab.Navigator backBehavior="history" tabBar={() => null}>
-      <Tab.Screen name="FeatureTab" component={FeatureScreen} />
-      <Tab.Screen name="HomeTab" component={HomeScreen} />
-      <Tab.Screen name="SettingsTab" component={SettingsScreen} />
-      <Tab.Screen name="Phantom" component={PhantomStackScreen} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator backBehavior="history" tabBar={() => null}>
+        <Tab.Screen name="FeatureTab" component={FeatureScreen} />
+        <Tab.Screen name="HomeTab" component={HomeScreen} />
+        <Tab.Screen name="SettingsTab" component={SettingsScreen} />
+        <Tab.Screen name="Phantom" component={PhantomStackScreen} />
+      </Tab.Navigator>
+      <CustomTabBar />
+    </>
   );
 }
 
@@ -120,7 +123,6 @@ function App() {
             />
             <Root.Screen name="Option" component={OptionScreen} />
           </Root.Navigator>
-          <CustomTabBar />
         </NavigationContainer>
       </TabBarStatusProvider>
     </View>
