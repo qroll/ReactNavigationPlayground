@@ -12,7 +12,7 @@ import OptionScreen from './src/OptionScreen';
 import ModalScreen from './src/ModalScreen';
 import MaintenanceScreen from './src/MaintenanceScreen';
 import { NavigationRef } from './src/NavigationRef';
-import { Button, StyleProp, ViewStyle } from 'react-native';
+import { Button, StyleProp, View, ViewStyle } from 'react-native';
 import StartToDetailsScreen from './src/StartToDetailsScreen';
 import TabBar from './src/TabBar';
 import AStartScreen from './src/feature/A/StartScreen';
@@ -23,6 +23,7 @@ import BScreen1 from './src/feature/B/BScreen1';
 import BEndScreen from './src/feature/B/BEndScreen';
 import { FeatureScreen } from './src/feature';
 import { TabBarStatusProvider } from './src/useTabBarStatus';
+import { CustomTabBar } from './src/CustomTabBar';
 
 const HomeStack = createStackNavigator();
 const PhantomStack = createStackNavigator();
@@ -79,10 +80,7 @@ function SettingsStackScreen() {
 
 function TabScreen() {
   return (
-    <Tab.Navigator
-      backBehavior="history"
-      screenOptions={{ tabBarVisible: true }}
-      tabBar={(props) => <TabBar {...props} />}>
+    <Tab.Navigator backBehavior="history" tabBar={() => null}>
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} />
@@ -93,36 +91,39 @@ function TabScreen() {
 
 function App() {
   return (
-    <TabBarStatusProvider>
-      <NavigationContainer
-        ref={NavigationRef}
-        theme={DefaultTheme}
-        onStateChange={(state) => {
-          // console.log('@@@ state', JSON.stringify(state));
-        }}>
-        <Root.Navigator
-          mode="modal"
-          screenOptions={{
-            cardStyle: { backgroundColor: 'red' },
-            ...TransitionPresets.SlideFromRightIOS,
+    <View style={{ flex: 1 }}>
+      <TabBarStatusProvider>
+        <NavigationContainer
+          ref={NavigationRef}
+          theme={DefaultTheme}
+          onStateChange={(state) => {
+            // console.log('@@@ state', JSON.stringify(state));
           }}>
-          <Root.Screen
-            name="Tabs"
-            component={TabScreen}
-            options={{ headerShown: false }}
-          />
-          {/* startPage */}
-          <Root.Screen name="Modal" component={ModalScreen} />
-          <Root.Screen name="Maintenance" component={MaintenanceScreen} />
-          <Root.Screen
-            name="Details"
-            component={DetailsScreen}
-            options={{ ...TransitionPresets.SlideFromRightIOS }}
-          />
-          <Root.Screen name="Option" component={OptionScreen} />
-        </Root.Navigator>
-      </NavigationContainer>
-    </TabBarStatusProvider>
+          <Root.Navigator
+            mode="modal"
+            screenOptions={{
+              cardStyle: { backgroundColor: 'red' },
+              ...TransitionPresets.SlideFromRightIOS,
+            }}>
+            <Root.Screen
+              name="Tabs"
+              component={TabScreen}
+              options={{ headerShown: false }}
+            />
+            {/* startPage */}
+            <Root.Screen name="Modal" component={ModalScreen} />
+            <Root.Screen name="Maintenance" component={MaintenanceScreen} />
+            <Root.Screen
+              name="Details"
+              component={DetailsScreen}
+              options={{ ...TransitionPresets.SlideFromRightIOS }}
+            />
+            <Root.Screen name="Option" component={OptionScreen} />
+          </Root.Navigator>
+          <CustomTabBar />
+        </NavigationContainer>
+      </TabBarStatusProvider>
+    </View>
   );
 }
 

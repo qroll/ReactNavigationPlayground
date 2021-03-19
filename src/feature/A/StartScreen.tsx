@@ -3,7 +3,10 @@ import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigateAfterTabAnimation } from '../../useTabBarStatus';
+import {
+  useNavigateAfterTabAnimation,
+  useSetTabBarVisible,
+} from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
 const styles = StyleSheet.create({
@@ -35,10 +38,12 @@ function AStartScreen({ navigation, route }) {
 
   const animation = useCardAnimation();
 
+  const setTabBarVisible = useSetTabBarVisible();
+
   React.useEffect(() => {
     const id = animation.next?.progress.addListener((progress) => {
       if (progress.value === 0 && isFocused) {
-        navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+        setTabBarVisible(true);
       }
     });
     return () => animation.next?.progress.removeListener(id);
@@ -66,17 +71,13 @@ function AStartScreen({ navigation, route }) {
         <Button
           title="Hide nav bar"
           onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: false });
+            setTabBarVisible(false);
           }}
         />
         <Button
           title="Show nav bar"
           onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: true });
+            setTabBarVisible(true);
           }}
         />
         <Text style={styles.body}>
@@ -93,17 +94,13 @@ function AStartScreen({ navigation, route }) {
         <Button
           title="Hide nav bar"
           onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: false });
+            setTabBarVisible(false);
           }}
         />
         <Button
           title="Show nav bar"
           onPress={() => {
-            navigation
-              .dangerouslyGetParent()
-              .setOptions({ tabBarVisible: true });
+            setTabBarVisible(true);
           }}
         />
         <Text style={styles.body}>

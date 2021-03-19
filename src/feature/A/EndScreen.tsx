@@ -2,7 +2,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, View, Text, StyleSheet, BackHandler } from 'react-native';
-import { useNavigateAfterTabAnimation } from '../../useTabBarStatus';
+import {
+  useNavigateAfterTabAnimation,
+  useSetTabBarVisible,
+} from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
 const styles = StyleSheet.create({
@@ -34,11 +37,13 @@ const styles = StyleSheet.create({
 });
 
 function AEndScreen({ navigation, route }) {
+  const setTabBarVisible = useSetTabBarVisible();
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('transitionEnd', (e) => {
       const isFocused = navigation.isFocused();
       if (isFocused) {
-        navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+        setTabBarVisible(true);
       }
     });
 
@@ -63,7 +68,7 @@ function AEndScreen({ navigation, route }) {
   React.useEffect(() => {
     const id = animation.swiping.addListener((progress) => {
       if (progress.value === 1) {
-        navigation.dangerouslyGetParent().setOptions({ tabBarVisible: false });
+        setTabBarVisible(false);
       }
     });
     return () => animation.swiping.removeListener(id);
