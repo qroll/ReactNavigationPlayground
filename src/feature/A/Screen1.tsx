@@ -49,6 +49,10 @@ function AScreen1({ navigation, route }) {
           purus a lacus.
         </Text>
         <Button
+          title="Show modal"
+          onPress={() => navigation.navigate('Modal')}
+        />
+        <Button
           title="Go to A End Screen"
           onPress={() => navigation.navigate('AEndScreen')}
         />

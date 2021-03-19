@@ -87,6 +87,7 @@ function AEndScreen({ navigation, route }) {
         non, tempor metus. Nulla euismod ex tellus, ut elementum nulla luctus
         ac.
       </Text>
+      <Button title="Show modal" onPress={() => navigation.navigate('Modal')} />
       <Button
         title="Go to A Screen 1"
         onPress={() => navigateAfterTabAnimation('AScreen1')}

@@ -87,6 +87,10 @@ function AStartScreen({ navigation, route }) {
           ac.
         </Text>
         <Button
+          title="Show modal"
+          onPress={() => navigation.navigate('Modal')}
+        />
+        <Button
           title="Hide nav bar"
           onPress={() => {
             navigation
