@@ -23,6 +23,14 @@ export const withLogger = (Component, options?) => (props) => {
   useFocusEffect(onFocus);
 
   React.useEffect(() => {
+    const unsubscribe = props.navigation.addListener('blur', (e) => {
+      console.log(`@@@ ${Component.name} blur`);
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+  React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('transitionStart', (e) => {
       console.log(`@@@ ${Component.name} transitionStart`);
     });
