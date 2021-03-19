@@ -8,7 +8,7 @@ function TabBar({ state, descriptors, navigation }) {
 
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
-  const animation = useRef(new Animated.Value(0)).current;
+  const animation = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     console.log('@@@ ANIMATE TAB BAR');
@@ -36,22 +36,21 @@ function TabBar({ state, descriptors, navigation }) {
   return (
     <Animated.View
       style={{
-        backgroundColor: 'green',
+        backgroundColor: '#bdb',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         height: Animated.interpolate(animation, {
           inputRange: [0, 1],
-          outputRange: [0, 50],
+          outputRange: [0, 80],
         }),
-        // transform: [
-        //   {
-        //     translateY: Animated.interpolate(animation, {
-        //       inputRange: [0, 1],
-        //       outputRange: [1000, 0],
-        //     }),
-        //   },
-        // ],
       }}>
-      <Text>LALALALALA</Text>
+      {['Home', 'Features', 'Settings'].map((label) => {
+        return (
+          <View key={label} style={{ margin: 16, flex: 1 }}>
+            <Text>{label}</Text>
+          </View>
+        );
+      })}
     </Animated.View>
   );
 }
