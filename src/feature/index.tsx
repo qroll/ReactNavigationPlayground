@@ -11,17 +11,9 @@ export function FeatureScreen({ navigation }) {
         onPress={() =>
           navigation.navigate('Tabs', {
             screen: 'Phantom',
-            params: { screen: 'AStartScreen' },
+            params: { screen: 'AStartScreen', initial: false },
           })
         }
-        // onPress={() => navigation.push('Tabs', {
-        //     screen: 'Phantom',
-        //     params: { screen: 'AStartScreen' },
-        //   })}
-        //   onPress={() => navigation.push('HomeTab', {
-        //     itemId: 85,
-        //     otherParam: 'anything you want here',
-        //   })}
       />
       <Button
         title="Go to Feature B"

@@ -1,4 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -30,11 +31,18 @@ function AStartScreen({ navigation, route }) {
     visible: false,
   });
 
-  const showTabBar = React.useCallback(() => {
-    navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
-  }, [navigation]);
+  const isFocused = useIsFocused();
 
-  useFocusEffect(showTabBar);
+  const animation = useCardAnimation();
+
+  React.useEffect(() => {
+    const id = animation.next?.progress.addListener((progress) => {
+      if (progress.value === 0 && isFocused) {
+        navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+      }
+    });
+    return () => animation.next?.progress.removeListener(id);
+  }, [animation.next]);
 
   return (
     <ScrollView>

@@ -1,5 +1,7 @@
+import { useIsFocused } from '@react-navigation/native';
+import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { Button, View, Text, StyleSheet, BackHandler } from 'react-native';
 import { useNavigateAfterTabAnimation } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
@@ -46,6 +48,26 @@ function AEndScreen({ navigation, route }) {
   const navigateAfterTabAnimation = useNavigateAfterTabAnimation({
     visible: false,
   });
+
+  React.useEffect(() => {
+    const handler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigateAfterTabAnimation('AStartScreen');
+      return true;
+    });
+
+    return () => handler.remove();
+  }, [navigateAfterTabAnimation]);
+
+  const animation = useCardAnimation();
+
+  React.useEffect(() => {
+    const id = animation.swiping.addListener((progress) => {
+      if (progress.value === 1) {
+        navigation.dangerouslyGetParent().setOptions({ tabBarVisible: false });
+      }
+    });
+    return () => animation.swiping.removeListener(id);
+  }, [animation.swiping]);
 
   return (
     <View style={styles.container}>

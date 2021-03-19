@@ -34,32 +34,30 @@ export const useNavigateAfterTabAnimation = (
   options: NavigateAfterTabAnimationOptions,
 ) => {
   const navigation = useNavigation();
-  const navigationInfo = React.useRef<{
-    hasPendingNavigation: boolean;
-    args: any[] | undefined;
-  }>({ hasPendingNavigation: false, args: undefined }).current;
+  const [hasPendingNavigation, setPendingNavigation] = useState(false);
+  const navigationArgs = React.useRef<any[] | undefined>(undefined);
   const isVisible = useIsTabBarVisible();
 
   const navigate = React.useCallback(
     (...args) => {
-      navigationInfo.hasPendingNavigation = true;
-      navigationInfo.args = args;
+      setPendingNavigation(true);
+      navigationArgs.current = args;
 
       navigation
         .dangerouslyGetParent()
         ?.setOptions({ tabBarVisible: options.visible });
     },
-    [options.visible, navigation, navigationInfo],
+    [options.visible, navigation, navigationArgs],
   );
 
   React.useEffect(() => {
     const desiredVisiblity = isVisible === options.visible;
 
-    if (desiredVisiblity && navigationInfo.hasPendingNavigation) {
-      navigation.navigate(...(navigationInfo.args as any));
-      navigationInfo.hasPendingNavigation = false;
+    if (desiredVisiblity && hasPendingNavigation) {
+      navigation.navigate(...(navigationArgs.current as any));
+      setPendingNavigation(false);
     }
-  }, [options.visible, isVisible, navigation, navigationInfo]);
+  }, [options.visible, isVisible, navigation, hasPendingNavigation]);
 
   return navigate;
 };

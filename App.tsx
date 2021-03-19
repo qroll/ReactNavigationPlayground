@@ -81,6 +81,7 @@ function TabScreen() {
   return (
     <Tab.Navigator
       backBehavior="history"
+      screenOptions={{ tabBarVisible: true }}
       tabBar={(props) => <TabBar {...props} />}>
       <Tab.Screen name="FeatureTab" component={FeatureScreen} />
       <Tab.Screen name="HomeTab" component={HomeScreen} />

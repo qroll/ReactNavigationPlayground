@@ -11,21 +11,20 @@ function TabBar({ state, descriptors, navigation }) {
   const animation = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    console.log('@@@ ANIMATE TAB BAR');
     if (focusedOptions.tabBarVisible) {
-      console.log('@@@ SHOW');
+      console.log('@@@ SHOW TAB BAR');
       Animated.timing(animation, {
         toValue: 1,
-        duration: 500,
+        duration: 200,
         easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
       }).start(() => {
         setVisible(true);
       });
     } else {
-      console.log('@@@ HIDE');
+      console.log('@@@ HIDE TAB BAR');
       Animated.timing(animation, {
         toValue: 0,
-        duration: 500,
+        duration: 200,
         easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
       }).start(() => {
         setVisible(false);
@@ -44,11 +43,50 @@ function TabBar({ state, descriptors, navigation }) {
           outputRange: [0, 80],
         }),
       }}>
-      {['Home', 'Features', 'Settings'].map((label) => {
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
         return (
-          <View key={label} style={{ margin: 16, flex: 1 }}>
-            <Text>{label}</Text>
-          </View>
+          <TouchableOpacity
+            key={label}
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{ margin: 16, flex: 1 }}>
+            <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
+              {label}
+            </Text>
+          </TouchableOpacity>
         );
       })}
     </Animated.View>
