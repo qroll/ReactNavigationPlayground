@@ -100,6 +100,13 @@ function AEndScreen({ navigation, route }) {
         title="Go to A Start Screen"
         onPress={() => navigation.navigate('AStartScreen')}
       />
+      <Button
+        title="Exit A"
+        onPress={() => {
+          navigation.navigate('AStartScreen');
+          navigation.goBack();
+        }}
+      />
       <Button title="Hide nav bar" onPress={() => setTabBarVisible(false)} />
       <Button title="Show nav bar" onPress={() => setTabBarVisible(true)} />
     </View>
