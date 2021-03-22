@@ -9,10 +9,10 @@ export function FeatureScreen({ navigation }) {
       <Button
         title="Go to Feature A"
         onPress={() =>
-          navigation.push('Tabs', {
-            screen: 'Phantom',
-            params: { screen: 'AStartScreen' },
-          })
+          navigation // stack
+            .dangerouslyGetParent() // tab
+            .dangerouslyGetParent() // common stack
+            .push('AStartScreen')
         }
       />
       <Button

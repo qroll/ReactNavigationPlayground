@@ -89,11 +89,12 @@ function AStartScreen({ navigation, route }) {
         </Text>
         <Button
           title="Show modal"
-          onPress={() =>
-            navigateAfterTabAnimation('Modal', {
-              onDismiss: () => setTabBarVisible(true),
-            })
-          }
+          // onPress={() =>
+          //   navigateAfterTabAnimation('Modal', {
+          //     onDismiss: () => setTabBarVisible(true),
+          //   })
+          // }
+          onPress={() => navigation.navigate('Modal')}
         />
         <Button
           title="Hide nav bar"

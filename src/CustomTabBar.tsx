@@ -1,9 +1,28 @@
-import { TabActions } from '@react-navigation/native';
+import {
+  CommonActions,
+  StackActions,
+  TabActions,
+} from '@react-navigation/native';
 import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated';
 import { NavigationRef } from './NavigationRef';
 import { TabBarStatusContext } from './useTabBarStatus';
+
+const Tabs = [
+  {
+    screenName: 'FeatureTab',
+    label: 'Feature',
+  },
+  {
+    screenName: 'HomeTab',
+    label: 'Home',
+  },
+  {
+    screenName: 'SettingsTab',
+    label: 'Settings',
+  },
+];
 
 export function CustomTabBar() {
   const { show: tabBarVisible, setVisible } = useContext(TabBarStatusContext);
@@ -44,9 +63,17 @@ export function CustomTabBar() {
         }),
         // opacity: animation
       }}>
-      {['FeatureTab', 'HomeTab', 'SettingsTab'].map((label, index) => {
+      {Tabs.map((tab) => {
+        const { label, screenName } = tab;
+
         const onPress = () => {
-          NavigationRef.current?.dispatch(TabActions.jumpTo(label));
+          NavigationRef.current?.dispatch(
+            CommonActions.navigate('Common', { screen: 'Tabs' }),
+          );
+          NavigationRef.current?.dispatch(TabActions.jumpTo(screenName));
+
+          NavigationRef.current?.emit<'asdasd'>({ type: 'asdasd' });
+          NavigationRef.current?.dispatch(StackActions.popToTop());
         };
 
         return (

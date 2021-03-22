@@ -27,6 +27,8 @@ import { CustomTabBar } from './src/CustomTabBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeStack = createStackNavigator();
+const FeatureStack = createStackNavigator();
+const CommonStack = createStackNavigator();
 const PhantomStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,10 +64,30 @@ function PhantomStackScreen() {
   );
 }
 
+function FeatureStackScreen() {
+  return (
+    <FeatureStack.Navigator initialRouteName="Feature">
+      <FeatureStack.Screen
+        name="Feature"
+        component={FeatureScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </FeatureStack.Navigator>
+  );
+}
+
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator initialRouteName="Home">
-      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -73,7 +95,13 @@ function HomeStackScreen() {
 function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator initialRouteName="Settings">
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <SettingsStack.Screen name="Option" component={OptionScreen} />
     </SettingsStack.Navigator>
   );
@@ -83,11 +111,40 @@ function TabScreen() {
   return (
     <>
       <Tab.Navigator backBehavior="history" tabBar={() => null}>
-        <Tab.Screen name="FeatureTab" component={FeatureScreen} />
-        <Tab.Screen name="HomeTab" component={HomeScreen} />
-        <Tab.Screen name="SettingsTab" component={SettingsScreen} />
-        <Tab.Screen name="Phantom" component={PhantomStackScreen} />
+        <Tab.Screen name="FeatureTab" component={FeatureStackScreen} />
+        <Tab.Screen name="HomeTab" component={HomeStackScreen} />
+        <Tab.Screen name="SettingsTab" component={SettingsStackScreen} />
+        {/* <Tab.Screen name="Phantom" component={PhantomStackScreen} /> */}
       </Tab.Navigator>
+    </>
+  );
+}
+
+function CommonStackScreen() {
+  return (
+    <>
+      <CommonStack.Navigator>
+        <CommonStack.Screen name="Tabs" component={TabScreen} />
+
+        <CommonStack.Screen
+          name="StartToDetails"
+          component={StartToDetailsScreen}
+          options={{
+            title: 'Overview',
+            cardStyle: defaultCardStyleOptions,
+          }}
+        />
+
+        <CommonStack.Screen name="AStartScreen" component={AStartScreen} />
+        <CommonStack.Screen name="AEndScreen" component={AEndScreen} />
+        <CommonStack.Screen name="BStartScreen" component={BStartScreen} />
+        <CommonStack.Screen name="BEndScreen" component={BEndScreen} />
+
+        <Root.Screen name="AScreen1" component={AScreen1} />
+        <Root.Screen name="BScreen1" component={BScreen1} />
+      </CommonStack.Navigator>
+
+      <CustomTabBar />
     </>
   );
 }
@@ -100,18 +157,20 @@ function App() {
           ref={NavigationRef}
           theme={DefaultTheme}
           onStateChange={(state) => {
-            // console.log('@@@ state', JSON.stringify(state));
+            console.log('@@@ state', JSON.stringify(state));
           }}>
           <Root.Navigator
             mode="modal"
             screenOptions={{
               cardStyle: { backgroundColor: 'red' },
-              ...TransitionPresets.SlideFromRightIOS,
             }}>
             <Root.Screen
-              name="Tabs"
-              component={TabScreen}
-              options={{ headerShown: false }}
+              name="Common"
+              component={CommonStackScreen}
+              options={{
+                headerShown: false,
+                ...TransitionPresets.SlideFromRightIOS,
+              }}
             />
             {/* startPage */}
             <Root.Screen name="Modal" component={ModalScreen} />
@@ -124,7 +183,6 @@ function App() {
             <Root.Screen name="Option" component={OptionScreen} />
           </Root.Navigator>
         </NavigationContainer>
-        <CustomTabBar />
       </SafeAreaView>
     </TabBarStatusProvider>
   );
