@@ -38,6 +38,14 @@ function ModalScreen({ navigation, route }) {
       />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button title="Pop" onPress={() => navigation.pop()} />
+      <Button
+        title="Go to A"
+        onPress={() =>
+          navigation.push('Common', {
+            screen: 'AScreen1',
+          })
+        }
+      />
     </View>
   );
 }

@@ -2,6 +2,7 @@ import {
   CommonActions,
   StackActions,
   TabActions,
+  useNavigation,
 } from '@react-navigation/native';
 import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
@@ -25,7 +26,11 @@ const Tabs = [
 ];
 
 export function CustomTabBar() {
-  const { show: tabBarVisible, setVisible } = useContext(TabBarStatusContext);
+  const { show: tabBarVisible, setVisible, tabBarProps } = useContext(
+    TabBarStatusContext,
+  );
+
+  const { state, descriptors, navigation } = tabBarProps;
 
   const animation = useRef(new Animated.Value(1)).current;
 
@@ -51,6 +56,10 @@ export function CustomTabBar() {
     }
   }, [tabBarVisible, setVisible, animation]);
 
+  if (!state) {
+    return null;
+  }
+
   return (
     <Animated.View
       style={{
@@ -63,25 +72,53 @@ export function CustomTabBar() {
         }),
         // opacity: animation
       }}>
-      {Tabs.map((tab) => {
-        const { label, screenName } = tab;
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
 
         const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
           NavigationRef.current?.dispatch(
             CommonActions.navigate('Common', { screen: 'Tabs' }),
           );
-          NavigationRef.current?.dispatch(TabActions.jumpTo(screenName));
 
-          NavigationRef.current?.emit<'asdasd'>({ type: 'asdasd' });
-          NavigationRef.current?.dispatch(StackActions.popToTop());
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
         };
 
         return (
           <TouchableOpacity
             key={label}
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
             onPress={onPress}
+            onLongPress={onLongPress}
             style={{ margin: 16, flex: 1 }}>
-            <Text style={{ color: '#222' }}>{label}</Text>
+            <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
+              {label}
+            </Text>
           </TouchableOpacity>
         );
       })}

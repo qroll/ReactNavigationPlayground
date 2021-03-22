@@ -15,6 +15,7 @@ import { NavigationRef } from './src/NavigationRef';
 import { Button, StyleProp, View, ViewStyle } from 'react-native';
 import StartToDetailsScreen from './src/StartToDetailsScreen';
 import TabBar from './src/TabBar';
+import InvisibleTabBar from './src/InvisibleTabBar';
 import AStartScreen from './src/feature/A/StartScreen';
 import AScreen1 from './src/feature/A/Screen1';
 import AEndScreen from './src/feature/A/EndScreen';
@@ -110,7 +111,9 @@ function SettingsStackScreen() {
 function TabScreen() {
   return (
     <>
-      <Tab.Navigator backBehavior="history" tabBar={() => null}>
+      <Tab.Navigator
+        backBehavior="history"
+        tabBar={(props) => <InvisibleTabBar {...props} />}>
         <Tab.Screen name="FeatureTab" component={FeatureStackScreen} />
         <Tab.Screen name="HomeTab" component={HomeStackScreen} />
         <Tab.Screen name="SettingsTab" component={SettingsStackScreen} />
@@ -123,8 +126,13 @@ function TabScreen() {
 function CommonStackScreen() {
   return (
     <>
-      <CommonStack.Navigator>
-        <CommonStack.Screen name="Tabs" component={TabScreen} />
+      <CommonStack.Navigator
+        screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+        <CommonStack.Screen
+          name="Tabs"
+          component={TabScreen}
+          options={{ headerShown: false }}
+        />
 
         <CommonStack.Screen
           name="StartToDetails"
@@ -140,8 +148,8 @@ function CommonStackScreen() {
         <CommonStack.Screen name="BStartScreen" component={BStartScreen} />
         <CommonStack.Screen name="BEndScreen" component={BEndScreen} />
 
-        <Root.Screen name="AScreen1" component={AScreen1} />
-        <Root.Screen name="BScreen1" component={BScreen1} />
+        <CommonStack.Screen name="AScreen1" component={AScreen1} />
+        <CommonStack.Screen name="BScreen1" component={BScreen1} />
       </CommonStack.Navigator>
 
       <CustomTabBar />
@@ -152,38 +160,36 @@ function CommonStackScreen() {
 function App() {
   return (
     <TabBarStatusProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <NavigationContainer
-          ref={NavigationRef}
-          theme={DefaultTheme}
-          onStateChange={(state) => {
-            console.log('@@@ state', JSON.stringify(state));
+      <NavigationContainer
+        ref={NavigationRef}
+        theme={DefaultTheme}
+        onStateChange={(state) => {
+          console.log('@@@ state', JSON.stringify(state));
+        }}>
+        <Root.Navigator
+          mode="modal"
+          screenOptions={{
+            cardStyle: { backgroundColor: 'red' },
           }}>
-          <Root.Navigator
-            mode="modal"
-            screenOptions={{
-              cardStyle: { backgroundColor: 'red' },
-            }}>
-            <Root.Screen
-              name="Common"
-              component={CommonStackScreen}
-              options={{
-                headerShown: false,
-                ...TransitionPresets.SlideFromRightIOS,
-              }}
-            />
-            {/* startPage */}
-            <Root.Screen name="Modal" component={ModalScreen} />
-            <Root.Screen name="Maintenance" component={MaintenanceScreen} />
-            <Root.Screen
-              name="Details"
-              component={DetailsScreen}
-              options={{ ...TransitionPresets.SlideFromRightIOS }}
-            />
-            <Root.Screen name="Option" component={OptionScreen} />
-          </Root.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
+          <Root.Screen
+            name="Common"
+            component={CommonStackScreen}
+            options={{
+              headerShown: false,
+              ...TransitionPresets.SlideFromRightIOS,
+            }}
+          />
+          {/* startPage */}
+          <Root.Screen name="Modal" component={ModalScreen} />
+          <Root.Screen name="Maintenance" component={MaintenanceScreen} />
+          <Root.Screen
+            name="Details"
+            component={DetailsScreen}
+            options={{ ...TransitionPresets.SlideFromRightIOS }}
+          />
+          <Root.Screen name="Option" component={OptionScreen} />
+        </Root.Navigator>
+      </NavigationContainer>
     </TabBarStatusProvider>
   );
 }

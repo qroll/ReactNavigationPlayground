@@ -6,6 +6,8 @@ interface TabBarStatus {
   setShow: (show: boolean) => void;
   isVisible: boolean;
   setVisible: (isVisible: boolean) => void;
+  tabBarProps: any;
+  setTabBarProps: (props: any) => void;
 }
 
 export const TabBarStatusContext = React.createContext<TabBarStatus>({
@@ -13,6 +15,8 @@ export const TabBarStatusContext = React.createContext<TabBarStatus>({
   setShow: () => {},
   isVisible: true,
   setVisible: () => {},
+  tabBarProps: {},
+  setTabBarProps: () => {},
 });
 
 export const useIsTabBarVisible = () => {
@@ -25,13 +29,26 @@ export const useSetTabBarVisible = () => {
   return value.setShow;
 };
 
+export const useTabBarProps = () => {
+  const value = useContext(TabBarStatusContext);
+  return value.tabBarProps;
+};
+
 export const TabBarStatusProvider = ({ children }) => {
   const [show, setShow] = useState(true);
   const [isVisible, setVisible] = useState(true);
+  const [tabBarProps, setTabBarProps] = useState({});
 
   return (
     <TabBarStatusContext.Provider
-      value={{ show, setShow, isVisible, setVisible }}>
+      value={{
+        show,
+        setShow,
+        isVisible,
+        setVisible,
+        tabBarProps,
+        setTabBarProps,
+      }}>
       {children}
     </TabBarStatusContext.Provider>
   );
