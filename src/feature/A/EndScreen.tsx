@@ -1,6 +1,13 @@
 import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, View, Text, StyleSheet, BackHandler } from 'react-native';
+import {
+  Button,
+  View,
+  Text,
+  StyleSheet,
+  BackHandler,
+  ScrollView,
+} from 'react-native';
 import {
   useNavigateAfterTabAnimation,
   useSetTabBarVisible,
@@ -10,6 +17,8 @@ import { withLogger } from '../../withLogger';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
     justifyContent: 'center',
     paddingVertical: 24,
     backgroundColor: '#fff',
@@ -74,7 +83,7 @@ function AEndScreen({ navigation, route }) {
   }, [animation.swiping]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <View style={styles.topSection}>
         <Text style={styles.image} />
         <Text style={styles.header}>A End Screen</Text>
@@ -109,7 +118,7 @@ function AEndScreen({ navigation, route }) {
       />
       <Button title="Hide nav bar" onPress={() => setTabBarVisible(false)} />
       <Button title="Show nav bar" onPress={() => setTabBarVisible(true)} />
-    </View>
+    </ScrollView>
   );
 }
 
