@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, View, Text, StyleSheet, BackHandler } from 'react-native';
@@ -101,6 +100,8 @@ function AEndScreen({ navigation, route }) {
         title="Go to A Start Screen"
         onPress={() => navigation.navigate('AStartScreen')}
       />
+      <Button title="Hide nav bar" onPress={() => setTabBarVisible(false)} />
+      <Button title="Show nav bar" onPress={() => setTabBarVisible(true)} />
     </View>
   );
 }

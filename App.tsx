@@ -24,6 +24,7 @@ import BEndScreen from './src/feature/B/BEndScreen';
 import { FeatureScreen } from './src/feature';
 import { TabBarStatusProvider } from './src/useTabBarStatus';
 import { CustomTabBar } from './src/CustomTabBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeStack = createStackNavigator();
 const PhantomStack = createStackNavigator();
@@ -87,15 +88,14 @@ function TabScreen() {
         <Tab.Screen name="SettingsTab" component={SettingsScreen} />
         <Tab.Screen name="Phantom" component={PhantomStackScreen} />
       </Tab.Navigator>
-      <CustomTabBar />
     </>
   );
 }
 
 function App() {
   return (
-    <View style={{ flex: 1 }}>
-      <TabBarStatusProvider>
+    <TabBarStatusProvider>
+      <SafeAreaView style={{ flex: 1 }}>
         <NavigationContainer
           ref={NavigationRef}
           theme={DefaultTheme}
@@ -124,8 +124,9 @@ function App() {
             <Root.Screen name="Option" component={OptionScreen} />
           </Root.Navigator>
         </NavigationContainer>
-      </TabBarStatusProvider>
-    </View>
+        <CustomTabBar />
+      </SafeAreaView>
+    </TabBarStatusProvider>
   );
 }
 

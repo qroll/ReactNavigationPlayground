@@ -1,7 +1,5 @@
-import { StackActions } from '@react-navigation/native';
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
-import { NavigationRef } from './NavigationRef';
 import { withLogger } from './withLogger';
 
 function ModalScreen({ navigation, route }) {
@@ -16,6 +14,17 @@ function ModalScreen({ navigation, route }) {
   //   // NOTE: by right this should be empty? how to do that when props can change? are you supposed to use a separate useEffect?
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [navigation, route.params]);
+
+  // workaround to only trigger on "componentWillUnmount" instead of prop ref
+  const onDismiss = React.useRef(route.params?.onDismiss);
+
+  React.useEffect(() => {
+    onDismiss.current = route.params?.onDismiss;
+  }, [route.params?.onDismiss]);
+
+  React.useEffect(() => {
+    return () => onDismiss.current?.();
+  }, []);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

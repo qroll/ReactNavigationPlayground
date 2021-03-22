@@ -18,7 +18,7 @@ export function FeatureScreen({ navigation }) {
       <Button
         title="Go to Feature B"
         onPress={() =>
-          navigation.navigate('Tabs', {
+          navigation.push('Tabs', {
             screen: 'Phantom',
             params: { screen: 'BStartScreen' },
           })

@@ -45,6 +45,15 @@ const HomeScreen = ({ navigation, route }) => {
         }
       />
       <Button
+        title="Go to Feature B"
+        onPress={() =>
+          navigation.push('Tabs', {
+            screen: 'Phantom',
+            params: { screen: 'BStartScreen' },
+          })
+        }
+      />
+      <Button
         title="Go to Options"
         onPress={() => navigation.navigate('Option', { itemId: 123 })}
       />
