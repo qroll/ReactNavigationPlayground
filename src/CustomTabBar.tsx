@@ -81,7 +81,14 @@ export function CustomTabBar() {
             ? options.title
             : route.name;
 
-        const isFocused = state.index === index;
+        // get Common Stack state
+        const CommonStackState = NavigationRef.current
+          ?.getRootState()
+          .routes.find((r) => r.name === 'Common').state;
+        const i = CommonStackState?.index;
+        const screenName = CommonStackState?.routes[i].name;
+
+        const isFocused = state.index === index && screenName === 'Tabs';
 
         const onPress = () => {
           const event = navigation.emit({

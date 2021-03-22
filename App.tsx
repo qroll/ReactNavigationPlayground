@@ -143,6 +143,13 @@ function CommonStackScreen() {
           }}
         />
 
+        <CommonStack.Screen
+          name="Details"
+          component={DetailsScreen}
+          options={{ ...TransitionPresets.SlideFromRightIOS }}
+        />
+        <CommonStack.Screen name="Option" component={OptionScreen} />
+
         <CommonStack.Screen name="AStartScreen" component={AStartScreen} />
         <CommonStack.Screen name="AEndScreen" component={AEndScreen} />
         <CommonStack.Screen name="BStartScreen" component={BStartScreen} />
@@ -164,7 +171,7 @@ function App() {
         ref={NavigationRef}
         theme={DefaultTheme}
         onStateChange={(state) => {
-          console.log('@@@ state', JSON.stringify(state));
+          // console.log('@@@ state', JSON.stringify(state));
         }}>
         <Root.Navigator
           mode="modal"
@@ -182,12 +189,6 @@ function App() {
           {/* startPage */}
           <Root.Screen name="Modal" component={ModalScreen} />
           <Root.Screen name="Maintenance" component={MaintenanceScreen} />
-          <Root.Screen
-            name="Details"
-            component={DetailsScreen}
-            options={{ ...TransitionPresets.SlideFromRightIOS }}
-          />
-          <Root.Screen name="Option" component={OptionScreen} />
         </Root.Navigator>
       </NavigationContainer>
     </TabBarStatusProvider>
