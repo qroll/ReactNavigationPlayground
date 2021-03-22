@@ -113,7 +113,7 @@ function TabScreen() {
     <>
       <Tab.Navigator
         backBehavior="history"
-        tabBar={(props) => <InvisibleTabBar {...props} />}>
+        tabBar={(props) => <TabBar {...props} />}>
         <Tab.Screen name="FeatureTab" component={FeatureStackScreen} />
         <Tab.Screen name="HomeTab" component={HomeStackScreen} />
         <Tab.Screen name="SettingsTab" component={SettingsStackScreen} />
@@ -158,8 +158,6 @@ function CommonStackScreen() {
         <CommonStack.Screen name="AScreen1" component={AScreen1} />
         <CommonStack.Screen name="BScreen1" component={BScreen1} />
       </CommonStack.Navigator>
-
-      <CustomTabBar />
     </>
   );
 }

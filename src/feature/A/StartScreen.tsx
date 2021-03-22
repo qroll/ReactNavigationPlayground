@@ -1,11 +1,9 @@
-import { useIsFocused } from '@react-navigation/native';
-import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
+  useEventEmitter,
   useNavigateAfterTabAnimation,
-  useSetTabBarVisible,
 } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
@@ -34,20 +32,17 @@ function AStartScreen({ navigation, route }) {
     visible: false,
   });
 
-  const isFocused = useIsFocused();
-
-  const animation = useCardAnimation();
-
-  const setTabBarVisible = useSetTabBarVisible();
+  const eventEmitter = useEventEmitter();
 
   React.useEffect(() => {
-    const id = animation.next?.progress.addListener((progress) => {
-      if (progress.value === 0 && isFocused) {
-        setTabBarVisible(true);
+    const id = navigation.addListener('transitionEnd', () => {
+      const isFocused = navigation.isFocused();
+      if (!isFocused) {
+        eventEmitter.emit('exitEvent');
       }
     });
-    return () => animation.next?.progress.removeListener(id);
-  }, [animation.next]);
+    return () => navigation.removeListener(id);
+  }, [navigation, eventEmitter]);
 
   return (
     <ScrollView>
@@ -68,18 +63,6 @@ function AStartScreen({ navigation, route }) {
           title="Go to A End Screen"
           onPress={() => navigation.push('AEndScreen')}
         />
-        <Button
-          title="Hide nav bar"
-          onPress={() => {
-            setTabBarVisible(false);
-          }}
-        />
-        <Button
-          title="Show nav bar"
-          onPress={() => {
-            setTabBarVisible(true);
-          }}
-        />
         <Text style={styles.body}>
           Etiam ullamcorper urna et elit lobortis, at suscipit sapien blandit.
           Suspendisse tempus, elit nec blandit accumsan, ex risus luctus magna,
@@ -95,18 +78,6 @@ function AStartScreen({ navigation, route }) {
           //   })
           // }
           onPress={() => navigation.navigate('Modal')}
-        />
-        <Button
-          title="Hide nav bar"
-          onPress={() => {
-            setTabBarVisible(false);
-          }}
-        />
-        <Button
-          title="Show nav bar"
-          onPress={() => {
-            setTabBarVisible(true);
-          }}
         />
         <Text style={styles.body}>
           Suspendisse efficitur odio sed ex blandit, in aliquet lacus faucibus.

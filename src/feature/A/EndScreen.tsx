@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {
+  useEventEmitter,
   useNavigateAfterTabAnimation,
   useSetTabBarVisible,
 } from '../../useTabBarStatus';
@@ -45,42 +46,18 @@ const styles = StyleSheet.create({
 });
 
 function AEndScreen({ navigation, route }) {
-  const setTabBarVisible = useSetTabBarVisible();
+  const eventEmitter = useEventEmitter();
+  const shouldEmitEvent = React.useRef(false);
 
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+    const id = navigation.addListener('transitionEnd', () => {
       const isFocused = navigation.isFocused();
-      if (isFocused) {
-        setTabBarVisible(true);
+      if (!isFocused && shouldEmitEvent.current) {
+        eventEmitter.emit('exitEvent');
       }
     });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  const navigateAfterTabAnimation = useNavigateAfterTabAnimation({
-    visible: false,
-  });
-
-  React.useEffect(() => {
-    const handler = BackHandler.addEventListener('hardwareBackPress', () => {
-      navigateAfterTabAnimation('AStartScreen');
-      return true;
-    });
-
-    return () => handler.remove();
-  }, [navigateAfterTabAnimation]);
-
-  const animation = useCardAnimation();
-
-  React.useEffect(() => {
-    const id = animation.swiping.addListener((progress) => {
-      if (progress.value === 1) {
-        setTabBarVisible(false);
-      }
-    });
-    return () => animation.swiping.removeListener(id);
-  }, [animation.swiping]);
+    return () => navigation.removeListener(id);
+  }, [navigation, eventEmitter]);
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -103,7 +80,7 @@ function AEndScreen({ navigation, route }) {
       <Button title="Show modal" onPress={() => navigation.navigate('Modal')} />
       <Button
         title="Go to A Screen 1"
-        onPress={() => navigateAfterTabAnimation('AScreen1')}
+        onPress={() => navigation.navigate('AScreen1')}
       />
       <Button
         title="Go to A Start Screen"
@@ -112,12 +89,11 @@ function AEndScreen({ navigation, route }) {
       <Button
         title="Exit A"
         onPress={() => {
+          shouldEmitEvent.current = true;
           navigation.navigate('AStartScreen');
           navigation.goBack();
         }}
       />
-      <Button title="Hide nav bar" onPress={() => setTabBarVisible(false)} />
-      <Button title="Show nav bar" onPress={() => setTabBarVisible(true)} />
     </ScrollView>
   );
 }

@@ -1,8 +1,30 @@
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
+import {
+  useEventEmitter,
+  useNavigateAfterTabAnimation,
+} from './useTabBarStatus';
 import { withLogger } from './withLogger';
 
 const HomeScreen = ({ navigation, route }) => {
+  /** TAB BAR CODE */
+
+  const navigateAfterTabAnimation = useNavigateAfterTabAnimation({
+    visible: false,
+  });
+
+  const eventEmitter = useEventEmitter();
+
+  React.useEffect(() => {
+    eventEmitter.addListener('exitEvent', () => {
+      console.log('@@@ GOT EXIT EVENT');
+      navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
+    });
+    return () => eventEmitter.removeAllListeners();
+  }, [navigation, eventEmitter]);
+
+  /** END TAB BAR CODE */
+
   const [count, setCount] = React.useState(0);
 
   React.useLayoutEffect(() => {
@@ -38,10 +60,12 @@ const HomeScreen = ({ navigation, route }) => {
       <Button
         title="Go to Feature A"
         onPress={() =>
-          navigation // stack
-            .dangerouslyGetParent() // tab
-            .dangerouslyGetParent() // common stack
-            .push('AStartScreen')
+          navigateAfterTabAnimation(() => {
+            navigation // stack
+              .dangerouslyGetParent() // tab
+              .dangerouslyGetParent() // common stack
+              .push('AStartScreen');
+          })
         }
       />
       <Button

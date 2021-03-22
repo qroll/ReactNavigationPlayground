@@ -8,19 +8,14 @@ function TabBar({ state, descriptors, navigation }) {
 
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
-  const animation = useRef(new Animated.Value(1)).current;
+  console.log('@@@ focusedOptions.tabBarVisible', focusedOptions.tabBarVisible);
+
+  const animation = useRef(
+    new Animated.Value(focusedOptions.tabBarVisible === false ? 0 : 1),
+  ).current;
 
   useEffect(() => {
-    if (focusedOptions.tabBarVisible) {
-      console.log('@@@ SHOW TAB BAR');
-      Animated.timing(animation, {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
-      }).start(() => {
-        setVisible(true);
-      });
-    } else {
+    if (focusedOptions.tabBarVisible === false) {
       console.log('@@@ HIDE TAB BAR');
       Animated.timing(animation, {
         toValue: 0,
@@ -28,6 +23,15 @@ function TabBar({ state, descriptors, navigation }) {
         easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
       }).start(() => {
         setVisible(false);
+      });
+    } else {
+      console.log('@@@ SHOW TAB BAR');
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 200,
+        easing: Easing.bezier(0.445, 0.05, 0.55, 0.95),
+      }).start(() => {
+        setVisible(true);
       });
     }
   }, [focusedOptions.tabBarVisible, setVisible, animation]);

@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import * as React from 'react';
 import { NavigationRef } from './NavigationRef';
 
@@ -40,7 +40,13 @@ export const withLogger = (Component, options?) => (props) => {
 
   React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('transitionEnd', (e) => {
-      console.log(`@@@ ${Component.name} transitionEnd`);
+      const isFocused = props.navigation.isFocused();
+
+      console.log(
+        `@@@ ${Component.name} transitionEnd: ${
+          isFocused ? 'pushed' : 'popped'
+        }`,
+      );
     });
 
     return unsubscribe;
