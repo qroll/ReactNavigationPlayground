@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
 import {
-  useEventEmitter,
   useNavigateAfterTabAnimation,
+  useShowTabBarOnExitEvent,
 } from './useTabBarStatus';
 import { withLogger } from './withLogger';
 
@@ -13,15 +13,7 @@ const HomeScreen = ({ navigation, route }) => {
     visible: false,
   });
 
-  const eventEmitter = useEventEmitter();
-
-  React.useEffect(() => {
-    eventEmitter.addListener('exitEvent', () => {
-      console.log('@@@ GOT EXIT EVENT');
-      navigation.dangerouslyGetParent().setOptions({ tabBarVisible: true });
-    });
-    return () => eventEmitter.removeAllListeners();
-  }, [navigation, eventEmitter]);
+  useShowTabBarOnExitEvent();
 
   /** END TAB BAR CODE */
 

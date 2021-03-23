@@ -1,18 +1,6 @@
-import { useCardAnimation } from '@react-navigation/stack';
 import * as React from 'react';
-import {
-  Button,
-  View,
-  Text,
-  StyleSheet,
-  BackHandler,
-  ScrollView,
-} from 'react-native';
-import {
-  useEventEmitter,
-  useNavigateAfterTabAnimation,
-  useSetTabBarVisible,
-} from '../../useTabBarStatus';
+import { Button, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useEmitExitEventOnPop } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
 
 const styles = StyleSheet.create({
@@ -46,18 +34,7 @@ const styles = StyleSheet.create({
 });
 
 function AEndScreen({ navigation, route }) {
-  const eventEmitter = useEventEmitter();
-  const shouldEmitEvent = React.useRef(false);
-
-  React.useEffect(() => {
-    const id = navigation.addListener('transitionEnd', () => {
-      const isFocused = navigation.isFocused();
-      if (!isFocused && shouldEmitEvent.current) {
-        eventEmitter.emit('exitEvent');
-      }
-    });
-    return () => navigation.removeListener(id);
-  }, [navigation, eventEmitter]);
+  const { setShouldEmit } = useEmitExitEventOnPop();
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -89,7 +66,7 @@ function AEndScreen({ navigation, route }) {
       <Button
         title="Exit A"
         onPress={() => {
-          shouldEmitEvent.current = true;
+          setShouldEmit(true);
           navigation.navigate('AStartScreen');
           navigation.goBack();
         }}

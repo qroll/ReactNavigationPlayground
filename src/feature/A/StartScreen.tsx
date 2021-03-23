@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
-  useEventEmitter,
+  useEmitExitEventOnPop,
   useNavigateAfterTabAnimation,
 } from '../../useTabBarStatus';
 import { withLogger } from '../../withLogger';
@@ -32,17 +32,7 @@ function AStartScreen({ navigation, route }) {
     visible: false,
   });
 
-  const eventEmitter = useEventEmitter();
-
-  React.useEffect(() => {
-    const id = navigation.addListener('transitionEnd', () => {
-      const isFocused = navigation.isFocused();
-      if (!isFocused) {
-        eventEmitter.emit('exitEvent');
-      }
-    });
-    return () => navigation.removeListener(id);
-  }, [navigation, eventEmitter]);
+  useEmitExitEventOnPop({ always: true });
 
   return (
     <ScrollView>

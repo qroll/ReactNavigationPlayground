@@ -1,6 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import EventEmitter from 'eventemitter3';
-import React, { useCallback, useContext, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface TabBarStatus {
   show: boolean;
@@ -73,11 +79,11 @@ export const useNavigateAfterTabAnimation = (
 ) => {
   const navigation = useNavigation();
   const [hasPendingNavigation, setPendingNavigation] = useState(false);
-  const navigationArgs = React.useRef<any[] | undefined>(undefined);
+  const navigationArgs = useRef<any[] | undefined>(undefined);
   const isVisible = useIsTabBarVisible();
   const setTabBarVisible = useSetTabBarVisible();
 
-  const navigate = React.useCallback(
+  const navigate = useCallback(
     (...args) => {
       setPendingNavigation(true);
       navigationArgs.current = args;
@@ -90,7 +96,7 @@ export const useNavigateAfterTabAnimation = (
     [options.visible, navigationArgs, setTabBarVisible],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const desiredVisiblity = isVisible === options.visible;
 
     if (desiredVisiblity && hasPendingNavigation) {
@@ -105,4 +111,46 @@ export const useNavigateAfterTabAnimation = (
   }, [options.visible, isVisible, navigation, hasPendingNavigation]);
 
   return navigate;
+};
+
+export const useShowTabBarOnExitEvent = () => {
+  const navigation = useNavigation();
+  const eventEmitter = useEventEmitter();
+
+  const setTabBarVisible = useCallback(() => {
+    navigation.dangerouslyGetParent()?.setOptions({ tabBarVisible: true });
+  }, [navigation]);
+
+  useEffect(() => {
+    eventEmitter.addListener('exitEvent', setTabBarVisible);
+    return () => eventEmitter.removeListener('exitEvent', setTabBarVisible);
+  }, [eventEmitter, setTabBarVisible]);
+};
+
+interface EmitExitEventOnPopOptions {
+  always?: boolean;
+}
+
+export const useEmitExitEventOnPop = (
+  options: EmitExitEventOnPopOptions = {},
+) => {
+  const navigation = useNavigation();
+  const eventEmitter = useEventEmitter();
+  const shouldEmitEvent = useRef(!!options.always);
+
+  useEffect(() => {
+    const id = navigation.addListener('transitionEnd', () => {
+      const isFocused = navigation.isFocused();
+      if (!isFocused && shouldEmitEvent.current) {
+        eventEmitter.emit('exitEvent');
+      }
+    });
+    return () => navigation.removeListener('transitionEnd', id);
+  }, [navigation, eventEmitter]);
+
+  const setShouldEmit = useCallback((emit: boolean) => {
+    shouldEmitEvent.current = emit;
+  }, []);
+
+  return { setShouldEmit };
 };
